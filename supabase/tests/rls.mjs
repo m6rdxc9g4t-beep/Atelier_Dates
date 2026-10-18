@@ -1,7 +1,11 @@
 import { PGlite } from "@electric-sql/pglite";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 
-const migration = readFileSync(new URL("../migrations/20261018000000_init.sql", import.meta.url), "utf8");
+const migrationsDir = new URL("../migrations/", import.meta.url);
+const migrations = readdirSync(migrationsDir)
+  .filter((f) => f.endsWith(".sql"))
+  .sort()
+  .map((f) => readFileSync(new URL(f, migrationsDir), "utf8"));
 const db = new PGlite();
 
 // --- Stub minimal de l'environnement Supabase ---------------------------------
@@ -24,8 +28,8 @@ create function storage.foldername(name text) returns text[] language sql immuta
 grant execute on function storage.foldername(text) to authenticated;
 `);
 
-await db.exec(migration);
-console.log("✓ migration appliquée");
+for (const sql of migrations) await db.exec(sql);
+console.log(`✓ ${migrations.length} migrations appliquées`);
 
 const U = {
   A: "00000000-0000-0000-0000-00000000000a",
