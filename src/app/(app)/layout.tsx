@@ -21,7 +21,7 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between px-5 pt-5 lg:hidden">
+        <header className="flex items-center justify-between px-5 pt-[max(1.25rem,env(safe-area-inset-top))] lg:hidden">
           <Link href="/accueil" className="font-display text-lg text-ink">
             Notre Petit Monde
           </Link>

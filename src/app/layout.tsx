@@ -9,9 +9,13 @@ export const metadata: Metadata = {
   title: { default: "Notre Petit Monde", template: "%s · Notre Petit Monde" },
   description: "Nos rendez-vous, nos souvenirs, nos projets — rien qu'à nous deux.",
   robots: { index: false, follow: false },
+  applicationName: "Notre Petit Monde",
+  appleWebApp: { capable: true, title: "Petit Monde", statusBarStyle: "default" },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
+  viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#fdf6f8" },
     { media: "(prefers-color-scheme: dark)", color: "#1c1420" },
