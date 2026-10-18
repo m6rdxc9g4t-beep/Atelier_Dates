@@ -1,26 +1,128 @@
 @import "tailwindcss";
 
+/* Le thème sombre suit la classe .dark posée sur <html> par le script de thème */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Design tokens — "papier de soie"
+   Fond rosé très pâle, encre aubergine, un accent pastel choisi par le couple.
+   --------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #fdf6f8;
+  --surface: #ffffff;
+  --sunken: #f8ecf1;
+  --ink: #3a2838;
+  --ink-soft: #7d6878;
+  --line: #eedde5;
+
+  --accent: #d1567f;
+  --accent-soft: #f9dce6;
+  --accent-ink: #ffffff;
+
+  --yes: #3f9a80;
+  --yes-soft: #d9f0e7;
+  --maybe: #c08a1e;
+  --maybe-soft: #f8ecd0;
+  --no: #b54a64;
+  --no-soft: #f6dbe2;
+
+  color-scheme: light;
+}
+
+:root[data-accent="lavande"] {
+  --accent: #7d68c0;
+  --accent-soft: #e7e1f7;
+}
+:root[data-accent="menthe"] {
+  --accent: #3b9479;
+  --accent-soft: #d6efe6;
+}
+:root[data-accent="ciel"] {
+  --accent: #4a7fc4;
+  --accent-soft: #dce8f8;
+}
+
+:root.dark {
+  --paper: #1c1420;
+  --surface: #261b2b;
+  --sunken: #2f2235;
+  --ink: #f5e9f0;
+  --ink-soft: #b9a5b5;
+  --line: #3d2e43;
+
+  --accent: #ef93b3;
+  --accent-soft: #4a2a3b;
+  --accent-ink: #2a1420;
+
+  --yes: #7fd0b5;
+  --yes-soft: #1f3b33;
+  --maybe: #e8c46a;
+  --maybe-soft: #3d331d;
+  --no: #f09bb0;
+  --no-soft: #47242f;
+
+  color-scheme: dark;
+}
+:root.dark[data-accent="lavande"] {
+  --accent: #b7a6ec;
+  --accent-soft: #352c4d;
+}
+:root.dark[data-accent="menthe"] {
+  --accent: #86d3b9;
+  --accent-soft: #1f3b33;
+}
+:root.dark[data-accent="ciel"] {
+  --accent: #93bbef;
+  --accent-soft: #22334a;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-yes: var(--yes);
+  --color-yes-soft: var(--yes-soft);
+  --color-maybe: var(--maybe);
+  --color-maybe-soft: var(--maybe-soft);
+  --color-no: var(--no);
+  --color-no-soft: var(--no-soft);
+
+  --font-display: "Young Serif", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Figtree Variable", "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Caveat", "Segoe Print", cursive;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    background: var(--paper);
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
