@@ -9,13 +9,11 @@
 create schema if not exists legacy;
 revoke all on schema legacy from public, anon, authenticated;
 
--- L'ancien trigger d'inscription écrivait dans l'ancienne table profiles
-drop trigger if exists on_auth_user_created on auth.users;
-
--- Politiques Storage de l'ancien bucket "photos" (le bucket et ses fichiers restent)
-drop policy if exists "photos_objects_select_couple" on storage.objects;
-drop policy if exists "photos_objects_insert_self" on storage.objects;
-drop policy if exists "photos_objects_delete_self" on storage.objects;
+-- Aucune suppression ici (les DROP demandent une confirmation manuelle) :
+--  * le trigger auth.users "on_auth_user_created" est conservé ; sa fonction
+--    public.handle_new_user() reste en place et est remplacée par la migration init ;
+--  * les politiques Storage de l'ancien bucket "photos" restent, elles ne
+--    concernent que ce bucket.
 
 do $$
 declare
@@ -26,12 +24,14 @@ begin
     execute format('alter table public.%I set schema legacy', r.tablename);
   end loop;
 
-  -- fonctions, sauf celle de l'event trigger Supabase qui active RLS automatiquement
+  -- fonctions, sauf celle de l'event trigger Supabase (RLS automatique)
+  -- et celle du trigger d'inscription, réutilisée par le nouveau schéma
   for r in
     select p.oid::regprocedure as signature
     from pg_proc p
     join pg_namespace n on n.oid = p.pronamespace
-    where n.nspname = 'public' and p.prokind = 'f' and p.proname <> 'rls_auto_enable'
+    where n.nspname = 'public' and p.prokind = 'f'
+      and p.proname not in ('rls_auto_enable', 'handle_new_user')
   loop
     execute format('alter function %s set schema legacy', r.signature);
   end loop;

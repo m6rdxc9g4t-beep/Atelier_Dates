@@ -72,9 +72,19 @@ begin
 end;
 $$;
 
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute function public.handle_new_user();
+-- Créé seulement s'il n'existe pas déjà (base reprise de la v1)
+do $$
+begin
+  if not exists (
+    select 1 from pg_trigger
+    where tgname = 'on_auth_user_created' and tgrelid = 'auth.users'::regclass
+  ) then
+    create trigger on_auth_user_created
+      after insert on auth.users
+      for each row execute function public.handle_new_user();
+  end if;
+end;
+$$;
 
 -- Créer un couple (l'appelant en devient le premier membre)
 create or replace function public.create_couple(p_name text, p_started_on date default null)
