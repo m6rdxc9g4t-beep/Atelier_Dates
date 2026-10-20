@@ -1,0 +1,24 @@
+#!/bin/bash
+# Notre Petit Monde — ouvre l'app web installée par Safari (Fichier → Ajouter au Dock),
+# sinon le site dans Safari.
+URL="https://atelier-dates.vercel.app/accueil"
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
+LOG="$HERE/Resources/last-launch.log"
+
+# 1. L'app web Safari déjà installée sur ce Mac (nommée « Atelier Dates »)
+if open -b "com.apple.Safari.WebApp.F80091C9-9EDE-476D-B15B-F1453753C5C1" 2>/dev/null; then
+  echo "$(date '+%F %T') web app (identifiant connu)" > "$LOG"; exit 0
+fi
+
+# 2. Toute autre app web Safari pointant vers le site (si elle a été recréée)
+while IFS= read -r app; do
+  [ -d "$app" ] || continue
+  name="$(basename "$app" .app)"
+  if grep -aqs "atelier-dates" "$app/Contents/Info.plist" || [[ "$name" =~ [Mm]onde|[Aa]telier[\ _-]?[Dd]ates ]]; then
+    open "$app" && { echo "$(date '+%F %T') web app : $app" > "$LOG"; exit 0; }
+  fi
+done < <(mdfind "kMDItemCFBundleIdentifier == 'com.apple.Safari.WebApp.*'" 2>/dev/null)
+
+# 3. À défaut, le site dans Safari
+open -a Safari "$URL" 2>/dev/null || open "$URL"
+echo "$(date '+%F %T') Safari : $URL" > "$LOG"
