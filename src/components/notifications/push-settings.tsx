@@ -111,7 +111,7 @@ export function PushSettings() {
   if (status === "install") {
     return (
       <p className="flex items-start gap-2 rounded-2xl bg-sunken px-4 py-3 text-sm text-ink">
-        <Share className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden />
+        <Share className="mt-0.5 size-4 shrink-0 text-accent-strong" aria-hidden />
         <span>
           Sur iPhone, les notifications marchent depuis l&apos;app installée : dans Safari, touche{" "}
           <strong>Partager → Sur l&apos;écran d&apos;accueil</strong>, puis ouvre Notre Petit Monde depuis son icône et reviens ici.

@@ -57,7 +57,7 @@ async function PotsContent() {
           <li key={pot.id}>
             <Link
               href={`/cagnottes/${pot.id}`}
-              className="block h-full rounded-[1.75rem] border border-line bg-surface p-5 transition-colors hover:border-accent"
+              className="block h-full neon-panel rounded-[1.75rem] border border-edge bg-surface p-5 transition-colors hover:border-accent hover:neon-panel-strong"
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl" aria-hidden>
@@ -74,8 +74,8 @@ async function PotsContent() {
                 )}
               </p>
               {progress !== null && (
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-sunken" aria-hidden>
-                  <div className="h-full rounded-full bg-accent" style={{ width: `${progress}%` }} />
+                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-accent-soft" aria-hidden>
+                  <div className="glow-accent h-full rounded-full bg-accent" style={{ width: `${progress}%` }} />
                 </div>
               )}
               <p className="mt-3 text-sm text-ink-soft">

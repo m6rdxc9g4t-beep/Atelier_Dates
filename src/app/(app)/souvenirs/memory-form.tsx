@@ -112,9 +112,9 @@ export function MemoryForm({ coupleId, albums, today }: { coupleId: string; albu
       <div className="sm:col-span-2">
         <label
           htmlFor="photos"
-          className="flex cursor-pointer items-center gap-3 rounded-2xl border border-dashed border-line px-4 py-4 text-ink-soft transition-colors hover:border-accent hover:text-ink has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent"
+          className="flex cursor-pointer items-center gap-3 rounded-2xl border border-dashed border-edge-soft px-4 py-4 text-ink-soft transition-colors hover:border-accent hover:text-ink has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent"
         >
-          <ImagePlus className="size-5 text-accent" aria-hidden />
+          <ImagePlus className="size-5 text-accent-strong" aria-hidden />
           {photoCount ? `${photoCount} photo${photoCount > 1 ? "s" : ""} sélectionnée${photoCount > 1 ? "s" : ""}` : "Ajouter des photos (10 Mo max chacune)"}
           <input
             id="photos"

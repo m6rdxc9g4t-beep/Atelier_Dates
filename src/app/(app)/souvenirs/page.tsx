@@ -90,7 +90,7 @@ async function MemoriesContent({ searchParams }: { searchParams: Promise<Record<
       </Disclosure>
 
       <form
-        className="mb-8 grid grid-cols-2 items-end gap-3 rounded-[1.75rem] bg-sunken/60 p-4 sm:grid-cols-[minmax(0,1fr)_9.5rem_9.5rem] lg:grid-cols-[minmax(0,1fr)_9.5rem_9.5rem_11rem_auto]"
+        className="mb-8 grid grid-cols-2 items-end gap-3 rounded-[1.75rem] border border-edge-soft bg-accent-faint p-4 sm:grid-cols-[minmax(0,1fr)_9.5rem_9.5rem] lg:grid-cols-[minmax(0,1fr)_9.5rem_9.5rem_11rem_auto]"
         role="search"
         aria-label="Filtrer les souvenirs"
       >
@@ -153,7 +153,7 @@ function MemoryItem({ memory, photos, album }: { memory: MemoryRow; photos: stri
   return (
     <li className="relative">
       <span className="absolute top-2 -left-[1.6rem] size-3 rounded-full border-2 border-paper bg-accent" aria-hidden />
-      <article className="rounded-[1.75rem] border border-line bg-surface p-5">
+      <article className="neon-panel rounded-[1.75rem] border border-edge bg-surface p-5">
         {photos.length > 0 && (
           <div className={photos.length === 1 ? "mb-4" : "mb-4 grid grid-cols-2 gap-2 sm:grid-cols-3"}>
             {photos.map((url, i) => (
@@ -187,7 +187,7 @@ function MemoryItem({ memory, photos, album }: { memory: MemoryRow; photos: stri
                     {memory.location_name}
                   </span>
                 ))}
-              {album && <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs text-ink">{album}</span>}
+              {album && <span className="rounded-full border border-edge-soft bg-accent-soft px-2.5 py-0.5 text-xs text-accent-strong">{album}</span>}
             </p>
           </div>
           <ActionForm action={deleteMemory} confirmMessage="Supprimer ce souvenir et ses photos ?">
@@ -197,7 +197,7 @@ function MemoryItem({ memory, photos, album }: { memory: MemoryRow; photos: stri
             </SubmitButton>
           </ActionForm>
         </div>
-        {memory.note && <p className="mt-3 font-hand text-2xl leading-snug whitespace-pre-line text-accent">{memory.note}</p>}
+        {memory.note && <p className="mt-3 font-hand text-2xl leading-snug whitespace-pre-line text-accent-strong">{memory.note}</p>}
       </article>
     </li>
   );

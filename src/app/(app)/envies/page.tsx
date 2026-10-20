@@ -106,7 +106,7 @@ function TypeLink({ href, active, label }: { href: string; active: boolean; labe
       aria-current={active ? "page" : undefined}
       className={cn(
         "rounded-full border px-4 py-1.5 text-sm transition-colors",
-        active ? "border-accent bg-accent-soft font-medium text-ink" : "border-line text-ink-soft hover:bg-sunken",
+        active ? "border-accent bg-accent-soft font-medium text-ink" : "border-edge-soft text-ink-soft hover:bg-accent-faint",
       )}
     >
       {label}
@@ -131,13 +131,13 @@ function WishCard({
   const kind = WISH_KINDS.find((k) => k.value === wish.kind)?.label ?? "";
 
   return (
-    <li className="rounded-[1.75rem] border border-line bg-surface p-5">
+    <li className="neon-panel rounded-[1.75rem] border border-edge bg-surface p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="flex flex-wrap items-center gap-2 text-xs text-ink-soft">
             <span>{kind}</span>
             {wish.estimated_budget != null && <span>environ {formatMoney(Number(wish.estimated_budget))}</span>}
-            {sharedCrush && <span className="rounded-full bg-accent px-2.5 py-0.5 font-medium text-accent-ink">Coup de cœur commun</span>}
+            {sharedCrush && <span className="rounded-full border border-edge-soft bg-accent-soft px-2.5 py-0.5 font-medium text-accent-strong">Coup de cœur commun</span>}
           </p>
           <h3 className="mt-1 font-display text-lg leading-snug text-ink">{wish.title}</h3>
         </div>
@@ -164,7 +164,7 @@ function WishCard({
                 value={n}
                 aria-label={`${n} sur 5 — ${DESIRE_LABELS[n]}`}
                 aria-pressed={mine === n}
-                className="rounded-full p-1 text-accent transition-transform hover:scale-110"
+                className="rounded-full p-1 text-accent-strong transition-transform hover:scale-110"
               >
                 <Heart className="size-5" fill={n <= mine ? "currentColor" : "none"} aria-hidden />
               </button>
@@ -179,7 +179,7 @@ function WishCard({
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-line pt-4">
-        <ActionForm action={setWishStatus} className="flex rounded-full bg-sunken p-1">
+        <ActionForm action={setWishStatus} className="flex rounded-full border border-edge-soft bg-accent-faint p-1">
           <input type="hidden" name="wish_id" value={wish.id} />
           {WISH_STATUSES.map((s) => (
             <button
@@ -190,7 +190,7 @@ function WishCard({
               aria-pressed={wish.status === s.value}
               className={cn(
                 "rounded-full px-3 py-1 text-xs font-medium transition-colors",
-                wish.status === s.value ? "bg-surface text-ink" : "text-ink-soft hover:text-ink",
+                wish.status === s.value ? "bg-selected text-ink" : "text-ink-soft hover:text-ink",
               )}
             >
               {s.label}

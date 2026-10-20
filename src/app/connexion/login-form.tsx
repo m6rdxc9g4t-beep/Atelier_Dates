@@ -20,7 +20,7 @@ export function LoginForm() {
   if (mode === "link" && linkState.status === "success") {
     return (
       <div className="rounded-[1.75rem] bg-accent-soft p-6 text-ink">
-        <Mail className="size-6 text-accent" aria-hidden />
+        <Mail className="size-6 text-accent-strong" aria-hidden />
         <p className="mt-3 font-display text-xl">Regarde ta boîte mail</p>
         <p className="mt-1 text-sm text-ink-soft">{linkState.message}</p>
       </div>

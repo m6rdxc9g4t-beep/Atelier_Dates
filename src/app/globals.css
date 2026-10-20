@@ -4,20 +4,32 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
-   Design tokens — "papier de soie"
-   Fond rosé très pâle, encre aubergine, un accent pastel choisi par le couple.
+   Design tokens — charte Atelier « néon monochrome »
+   Toute l'app est dans sa couleur signature (rouge #E03131, posée par
+   data-atelier-app="dates" sur <html>) : fonds, surfaces, bordures, textes et
+   halos sont branchés sur les jetons --atelier-* de atelier-brand.css, qui
+   changent eux-mêmes de valeur en thème sombre (.dark sur <html>).
+   Seules les couleurs qui portent un sens (oui / peut-être / non) restent à part.
    --------------------------------------------------------------------------- */
 :root {
-  --paper: #fdf6f8;
-  --surface: #ffffff;
-  --sunken: #f8ecf1;
-  --ink: #3a2838;
-  --ink-soft: #7d6878;
-  --line: #eedde5;
+  --paper: var(--atelier-bg);
+  --sidebar: var(--atelier-sidebar);
+  --surface: var(--atelier-surface);
+  --sunken: var(--atelier-surface-2); /* survol, pastilles, squelettes */
+  --selected: var(--atelier-surface-3);
+  --field: var(--atelier-field);
+  --ink: var(--atelier-text);
+  --ink-soft: var(--atelier-muted);
+  --edge: var(--atelier-border); /* contour des cartes et panneaux */
+  --edge-soft: var(--atelier-border-soft); /* champs, boutons secondaires, tags */
+  --line: var(--atelier-line); /* séparateurs */
 
-  --accent: #d1567f;
-  --accent-soft: #f9dce6;
-  --accent-ink: #ffffff;
+  --accent: var(--atelier-signature);
+  --accent-ink: var(--atelier-signature-contrast);
+  --accent-soft: var(--atelier-signature-soft);
+  --accent-faint: var(--atelier-signature-faint);
+  /* Accent lisible en texte ou icône fine (assombri en clair, éclairci en sombre) */
+  --accent-strong: var(--atelier-ink);
 
   --yes: #3f9a80;
   --yes-soft: #d9f0e7;
@@ -29,31 +41,22 @@
   color-scheme: light;
 }
 
+/* Accents au choix du couple (Paramètres → Thème) : ils remplacent la signature,
+   et toute la palette dérivée suit. */
+:root[data-accent] {
+  --atelier-signature-contrast: #ffffff;
+}
 :root[data-accent="lavande"] {
-  --accent: #7d68c0;
-  --accent-soft: #e7e1f7;
+  --atelier-signature: #7d68c0;
 }
 :root[data-accent="menthe"] {
-  --accent: #3b9479;
-  --accent-soft: #d6efe6;
+  --atelier-signature: #3b9479;
 }
 :root[data-accent="ciel"] {
-  --accent: #4a7fc4;
-  --accent-soft: #dce8f8;
+  --atelier-signature: #4a7fc4;
 }
 
 :root.dark {
-  --paper: #1c1420;
-  --surface: #261b2b;
-  --sunken: #2f2235;
-  --ink: #f5e9f0;
-  --ink-soft: #b9a5b5;
-  --line: #3d2e43;
-
-  --accent: #ef93b3;
-  --accent-soft: #4a2a3b;
-  --accent-ink: #2a1420;
-
   --yes: #7fd0b5;
   --yes-soft: #1f3b33;
   --maybe: #e8c46a;
@@ -63,29 +66,24 @@
 
   color-scheme: dark;
 }
-:root.dark[data-accent="lavande"] {
-  --accent: #b7a6ec;
-  --accent-soft: #352c4d;
-}
-:root.dark[data-accent="menthe"] {
-  --accent: #86d3b9;
-  --accent-soft: #1f3b33;
-}
-:root.dark[data-accent="ciel"] {
-  --accent: #93bbef;
-  --accent-soft: #22334a;
-}
 
 @theme inline {
   --color-paper: var(--paper);
+  --color-sidebar: var(--sidebar);
   --color-surface: var(--surface);
   --color-sunken: var(--sunken);
+  --color-selected: var(--selected);
+  --color-field: var(--field);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-line: var(--line);
+  --color-edge: var(--edge);
+  --color-edge-soft: var(--edge-soft);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-faint: var(--accent-faint);
+  --color-accent-strong: var(--accent-strong);
   --color-yes: var(--yes);
   --color-yes-soft: var(--yes-soft);
   --color-maybe: var(--maybe);
@@ -103,7 +101,10 @@
     background: var(--paper);
   }
   body {
-    background: var(--paper);
+    /* Fine grille + lueur en haut, dans la couleur de l'app.
+       --atelier-backdrop contient des tailles de motif : uniquement dans le raccourci `background`. */
+    background: var(--atelier-backdrop), var(--atelier-bg);
+    background-attachment: fixed;
     color: var(--ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -116,6 +117,27 @@
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
+}
+
+/* Carte / panneau : halo dans la couleur de l'app (bordure : border-edge) */
+@utility neon-panel {
+  box-shadow: var(--atelier-glow);
+}
+/* Élément mis en avant (survol d'une tuile, formulaire ouvert) */
+@utility neon-panel-strong {
+  box-shadow: var(--atelier-glow-strong);
+}
+/* Halo de la signature (bouton principal, barre de progression) */
+@utility glow-accent {
+  box-shadow: var(--atelier-signature-glow);
+}
+/* Anneau de focus des champs (avec focus:border-accent) */
+@utility focus-glow {
+  box-shadow: var(--atelier-focus);
+}
+/* Titres de page : halo de la couleur, dans les deux thèmes */
+@utility neon-title {
+  text-shadow: var(--atelier-text-glow);
 }
 
 @media (prefers-reduced-motion: reduce) {

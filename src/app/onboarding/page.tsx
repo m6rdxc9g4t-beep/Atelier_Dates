@@ -11,8 +11,8 @@ export default function OnboardingPage() {
   return (
     <main className="grid min-h-dvh place-items-center px-5 py-12">
       <div className="w-full max-w-md">
-        <p className="font-hand text-3xl text-accent">premier pas</p>
-        <h1 className="mt-1 font-display text-4xl leading-tight text-ink">Créons votre petit monde</h1>
+        <p className="font-hand text-3xl text-accent-strong">premier pas</p>
+        <h1 className="neon-title mt-1 font-display text-4xl leading-tight text-ink">Créons votre petit monde</h1>
         <p className="mt-3 mb-8 text-ink-soft">
           L&apos;un de vous crée l&apos;espace, l&apos;autre le rejoint avec le code d&apos;invitation.
         </p>

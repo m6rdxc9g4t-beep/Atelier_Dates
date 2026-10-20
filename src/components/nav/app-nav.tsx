@@ -48,11 +48,11 @@ function SideLink({ item, active }: { item: NavItem; active: boolean }) {
       href={item.href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex items-center gap-3 rounded-full px-4 py-2.5 text-[0.95rem] transition-colors",
-        active ? "bg-accent-soft font-semibold text-ink" : "text-ink-soft hover:bg-sunken hover:text-ink",
+        "flex items-center gap-3 rounded-xl px-4 py-2.5 text-[0.95rem] transition-colors",
+        active ? "atelier-nav-active font-semibold" : "text-ink-soft hover:bg-accent-faint hover:text-ink",
       )}
     >
-      <Icon className={cn("size-[1.15rem]", active && "text-accent")} aria-hidden strokeWidth={active ? 2.2 : 1.8} />
+      <Icon className={cn("size-[1.15rem]", active && "text-accent-strong")} aria-hidden strokeWidth={active ? 2.2 : 1.8} />
       {item.label}
     </Link>
   );
@@ -63,7 +63,7 @@ export const BottomNav = withPathname(function BottomNavView({ pathname }) {
   return (
     <nav
       aria-label="Navigation principale"
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+      className="neon-panel fixed inset-x-0 bottom-0 z-30 border-t border-edge bg-sidebar/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
     >
       <ul className="mx-auto grid max-w-lg grid-cols-6">
         {NAV_ITEMS.map((item) => {
@@ -76,7 +76,7 @@ export const BottomNav = withPathname(function BottomNavView({ pathname }) {
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "flex flex-col items-center gap-1 py-2.5 text-[0.68rem]",
-                  active ? "font-semibold text-accent" : "text-ink-soft",
+                  active ? "font-semibold text-accent-strong" : "text-ink-soft",
                 )}
               >
                 <Icon className="size-5" aria-hidden strokeWidth={active ? 2.2 : 1.8} />
@@ -99,7 +99,7 @@ export const MobileSettingsLink = withPathname(function MobileSettingsLinkView({
       href={SETTINGS_ITEM.href}
       aria-label={SETTINGS_ITEM.label}
       aria-current={active ? "page" : undefined}
-      className={cn("grid size-10 place-items-center rounded-full", active ? "bg-accent-soft text-accent" : "text-ink-soft hover:bg-sunken")}
+      className={cn("grid size-10 place-items-center rounded-full", active ? "bg-accent-soft text-accent-strong" : "text-ink-soft hover:bg-accent-faint")}
     >
       <Icon className="size-5" aria-hidden />
     </Link>

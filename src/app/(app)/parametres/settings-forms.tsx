@@ -42,7 +42,7 @@ function Toggle({ name, label, defaultChecked }: { name: string; label: string; 
       <input type="checkbox" name={name} defaultChecked={defaultChecked} className="peer sr-only" />
       <span
         aria-hidden
-        className="relative h-6 w-11 rounded-full bg-line transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-surface after:transition-transform peer-checked:after:translate-x-5"
+        className="relative h-6 w-11 rounded-full bg-edge-soft transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-surface after:transition-transform peer-checked:after:translate-x-5"
       />
       {label}
     </label>

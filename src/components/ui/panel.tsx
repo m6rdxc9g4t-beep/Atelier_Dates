@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import type { HTMLAttributes } from "react";
 
-/** Conteneur principal : grand arrondi, bordure teintée, pas d'ombre */
+/** Conteneur principal : grand arrondi, trait et halo dans la couleur de l'app */
 export function Panel({ className, ...props }: HTMLAttributes<HTMLElement>) {
-  return <section className={cn("rounded-[1.75rem] border border-line bg-surface p-5 sm:p-6", className)} {...props} />;
+  return <section className={cn("neon-panel rounded-[1.75rem] border border-edge bg-surface p-5 sm:p-6", className)} {...props} />;
 }
 
 /** Titre de section à l'intérieur d'une page */
