@@ -8,7 +8,7 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import { ThemePicker } from "@/components/theme/theme-picker";
 import { getCoupleContext } from "@/lib/dal";
 import { signOut } from "@/app/connexion/actions";
-import { CoupleForm, InviteCode, ProfileForm } from "./settings-forms";
+import { CoupleForm, InviteCode, PasswordForm, ProfileForm } from "./settings-forms";
 
 export const metadata: Metadata = { title: "Paramètres" };
 
@@ -20,6 +20,10 @@ export default function SettingsPage() {
         <Suspense fallback={<ListSkeleton rows={2} />}>
           <SettingsContent />
         </Suspense>
+        <Panel>
+          <SectionTitle>Mot de passe</SectionTitle>
+          <PasswordForm />
+        </Panel>
         <Panel>
           <SectionTitle>Thème</SectionTitle>
           <ThemePicker />

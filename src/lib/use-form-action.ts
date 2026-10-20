@@ -16,7 +16,8 @@ export function useFormAction(action: FormAction) {
     if (result.status !== "error") return result;
     const values: Record<string, string> = {};
     formData.forEach((value, key) => {
-      if (typeof value === "string" && !key.startsWith("$ACTION")) values[key] = value;
+      // jamais de mot de passe gardé en mémoire
+      if (typeof value === "string" && !key.startsWith("$ACTION") && !/password|confirm/i.test(key)) values[key] = value;
     });
     return { ...result, values };
   }, idleState);

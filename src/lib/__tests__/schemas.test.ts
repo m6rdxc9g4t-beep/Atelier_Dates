@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { dateProposalSchema, expenseSchema, joinCoupleSchema, memorySchema, profileSettingsSchema } from "@/lib/validation/schemas";
+import {
+  dateProposalSchema,
+  expenseSchema,
+  joinCoupleSchema,
+  memorySchema,
+  passwordChangeSchema,
+  passwordLoginSchema,
+  profileSettingsSchema,
+} from "@/lib/validation/schemas";
 
 const id = "4f8b2c1e-3a5d-4e6f-9a7b-1c2d3e4f5a6b";
 
@@ -37,5 +45,19 @@ describe("schémas Zod", () => {
     const r = memorySchema.parse({ title: "Plage", happened_on: "2026-08-01", photo_paths: `${id}/x.jpg`, album_id: "" });
     expect(r.photo_paths).toEqual([`${id}/x.jpg`]);
     expect(r.album_id).toBeNull();
+  });
+
+  it("connexion : refuse les redirections vers un autre site", () => {
+    const base = { email: "Lea@Exemple.fr ", password: "x" };
+    expect(passwordLoginSchema.parse({ ...base, next: "/cagnottes" })).toEqual({ email: "lea@exemple.fr", password: "x", next: "/cagnottes" });
+    expect(passwordLoginSchema.parse({ ...base, next: "//pirate.com" }).next).toBeUndefined();
+    expect(passwordLoginSchema.parse({ ...base, next: "https://pirate.com" }).next).toBeUndefined();
+    expect(passwordLoginSchema.safeParse({ email: "lea@exemple.fr", password: "" }).success).toBe(false);
+  });
+
+  it("changement de mot de passe : longueur et confirmation", () => {
+    expect(passwordChangeSchema.safeParse({ password: "court", confirm: "court" }).success).toBe(false);
+    expect(passwordChangeSchema.safeParse({ password: "assez-long", confirm: "autre-chose" }).success).toBe(false);
+    expect(passwordChangeSchema.safeParse({ password: "assez-long", confirm: "assez-long" }).success).toBe(true);
   });
 });

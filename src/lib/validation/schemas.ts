@@ -41,10 +41,29 @@ export const profileSettingsSchema = z.object({
   notify_sms: z.preprocess((v) => v === "on", z.boolean()),
 });
 
+/** Chemin interne uniquement (pas de redirection ouverte vers un autre site) */
+const internalPath = z
+  .string()
+  .refine((v) => v.startsWith("/") && !v.startsWith("//") && !v.startsWith("/\\"))
+  .optional()
+  .catch(undefined);
+
 export const loginSchema = z.object({
-  email: z.email({ error: "Adresse e-mail invalide." }).trim().toLowerCase(),
-  next: z.string().startsWith("/").optional().catch(undefined),
+  // espaces retirés avant validation (le clavier iPhone en ajoute souvent un)
+  email: z.string({ error: "Indique ton adresse e-mail." }).trim().toLowerCase().pipe(z.email({ error: "Adresse e-mail invalide." })),
+  next: internalPath,
 });
+
+export const passwordLoginSchema = loginSchema.extend({
+  password: z.string({ error: "Indique ton mot de passe." }).min(1, "Indique ton mot de passe.").max(200),
+});
+
+export const passwordChangeSchema = z
+  .object({
+    password: z.string().min(8, "8 caractères minimum.").max(200, "200 caractères maximum."),
+    confirm: z.string(),
+  })
+  .refine((v) => v.password === v.confirm, { path: ["confirm"], error: "Les deux mots de passe ne correspondent pas." });
 
 // --- Rendez-vous -------------------------------------------------------------
 export const dateProposalSchema = z.object({

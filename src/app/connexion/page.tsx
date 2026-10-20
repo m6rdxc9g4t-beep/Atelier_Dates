@@ -14,7 +14,7 @@ export default function LoginPage() {
         <p className="mt-3 mb-8 text-ink-soft">
           Vos rendez-vous, vos comptes, vos souvenirs et vos projets, dans un espace rien qu&apos;à vous deux.
         </p>
-        <Suspense fallback={<Skeleton className="h-48" />}>
+        <Suspense fallback={<Skeleton className="h-64" />}>
           <LoginForm />
         </Suspense>
       </div>

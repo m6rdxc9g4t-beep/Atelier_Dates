@@ -8,7 +8,7 @@ import { FormMessage } from "@/components/ui/form-message";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { useFormAction } from "@/lib/use-form-action";
 import type { CoupleRow, ProfileRow } from "@/lib/supabase/database.types";
-import { updateCouple, updateProfile } from "./actions";
+import { updateCouple, updatePassword, updateProfile } from "./actions";
 
 export function ProfileForm({ profile }: { profile: ProfileRow }) {
   const [state, action] = useFormAction(updateProfile);
@@ -92,5 +92,26 @@ export function InviteCode({ code }: { code: string }) {
         {copied ? "Copié" : "Copier"}
       </Button>
     </div>
+  );
+}
+
+export function PasswordForm() {
+  const [state, action] = useFormAction(updatePassword);
+  const e = state.fieldErrors;
+  return (
+    <form action={action} key={state.status === "success" ? state.message : "form"} className="grid gap-4 sm:grid-cols-2" noValidate>
+      <Field label="Nouveau mot de passe" name="password" hint="8 caractères minimum" errors={e?.password}>
+        <Input name="password" type="password" autoComplete="new-password" required invalid={!!e?.password} />
+      </Field>
+      <Field label="Confirme-le" name="confirm" errors={e?.confirm}>
+        <Input name="confirm" type="password" autoComplete="new-password" required invalid={!!e?.confirm} />
+      </Field>
+      <div className="flex flex-col gap-3 sm:col-span-2">
+        <FormMessage state={state} />
+        <SubmitButton variant="soft" pendingLabel="Enregistrement…" className="self-start">
+          Changer mon mot de passe
+        </SubmitButton>
+      </div>
+    </form>
   );
 }
