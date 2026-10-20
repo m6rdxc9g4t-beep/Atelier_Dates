@@ -163,6 +163,31 @@ export type SurpriseHintRow = {
   created_at: string;
 };
 
+export type NotificationKind = "date_proposed" | "date_answered" | "date_accepted" | "surprise" | "memory" | "test";
+
+export type NotificationRow = {
+  id: string;
+  couple_id: string;
+  recipient_id: string;
+  actor_id: string | null;
+  kind: NotificationKind;
+  title: string;
+  body: string | null;
+  link: string | null;
+  read_at: string | null;
+  created_at: string;
+};
+
+export type PushSubscriptionRow = {
+  id: string;
+  user_id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  user_agent: string | null;
+  created_at: string;
+};
+
 export type Database = {
   __InternalSupabase: { PostgrestVersion: "13" };
   public: {
@@ -217,6 +242,17 @@ export type Database = {
         Pick<SurpriseSecretRow, "surprise_id" | "couple_id" | "title"> & Partial<Pick<SurpriseSecretRow, "message">>
       >;
       surprise_hints: Table<SurpriseHintRow, Pick<SurpriseHintRow, "surprise_id" | "couple_id" | "content" | "reveal_at">>;
+      notifications: Table<
+        NotificationRow,
+        Pick<NotificationRow, "couple_id" | "recipient_id" | "actor_id" | "kind" | "title"> &
+          Partial<Pick<NotificationRow, "body" | "link">>,
+        Partial<Pick<NotificationRow, "read_at">>
+      >;
+      push_subscriptions: Table<
+        PushSubscriptionRow,
+        Pick<PushSubscriptionRow, "endpoint" | "p256dh" | "auth"> & Partial<Pick<PushSubscriptionRow, "user_agent">>,
+        never
+      >;
     };
     Views: { [_ in never]: never };
     Functions: {
@@ -225,6 +261,18 @@ export type Database = {
       create_couple: { Args: { p_name: string; p_started_on?: string | null }; Returns: string };
       join_couple: { Args: { p_code: string }; Returns: string };
       complete_date: { Args: { p_proposal: string }; Returns: undefined };
+      notification_target: {
+        Args: { p_recipient: string };
+        Returns: {
+          display_name: string;
+          email: string;
+          phone: string | null;
+          notify_email: boolean;
+          notify_sms: boolean;
+        }[];
+      };
+      push_targets: { Args: { p_recipient: string }; Returns: { endpoint: string; p256dh: string; auth: string }[] };
+      forget_push_subscription: { Args: { p_endpoint: string }; Returns: undefined };
     };
     Enums: {
       date_status: DateStatus;

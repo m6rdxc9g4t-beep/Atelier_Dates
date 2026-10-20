@@ -6,6 +6,8 @@ import { Panel, SectionTitle } from "@/components/ui/panel";
 import { ListSkeleton } from "@/components/ui/skeleton";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { ThemePicker } from "@/components/theme/theme-picker";
+import { PushSettings } from "@/components/notifications/push-settings";
+import { TestNotification } from "@/components/notifications/test-notification";
 import { getCoupleContext } from "@/lib/dal";
 import { signOut } from "@/app/connexion/actions";
 import { CoupleForm, InviteCode, PasswordForm, ProfileForm } from "./settings-forms";
@@ -20,6 +22,17 @@ export default function SettingsPage() {
         <Suspense fallback={<ListSkeleton rows={2} />}>
           <SettingsContent />
         </Suspense>
+        <Panel>
+          <SectionTitle>Notifications</SectionTitle>
+          <p className="mb-4 text-sm text-ink-soft">
+            Propositions, réponses, surprises et souvenirs : tu es prévenu·e dans l&apos;app, en push sur chaque appareil où tu
+            l&apos;actives, et par e-mail ou SMS selon tes choix dans « Ton profil ».
+          </p>
+          <PushSettings />
+          <div className="mt-5 border-t border-line pt-5">
+            <TestNotification />
+          </div>
+        </Panel>
         <Panel>
           <SectionTitle>Mot de passe</SectionTitle>
           <PasswordForm />

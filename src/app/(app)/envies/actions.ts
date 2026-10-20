@@ -6,6 +6,7 @@ import { getCoupleContext } from "@/lib/dal";
 import { failure, formToObject, fromDbError, fromZodError, success, type ActionState } from "@/lib/actions";
 import { desireSchema, wishSchema, wishStatusSchema } from "@/lib/validation/schemas";
 import { uuid } from "@/lib/validation/common";
+import { notifyPartner } from "@/lib/notify";
 
 export async function createWish(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const parsed = wishSchema.safeParse(formToObject(formData));
@@ -78,7 +79,8 @@ export async function proposeFromWish(_prev: ActionState, formData: FormData): P
   const id = uuid.safeParse(formData.get("wish_id"));
   if (!id.success) return failure("Envie introuvable.");
 
-  const { supabase, userId, couple } = await getCoupleContext();
+  const ctx = await getCoupleContext();
+  const { supabase, userId, couple, me } = ctx;
   const { data: wish } = await supabase.from("wishes").select("*").eq("id", id.data).maybeSingle();
   if (!wish) return failure("Envie introuvable.");
 
@@ -92,6 +94,12 @@ export async function proposeFromWish(_prev: ActionState, formData: FormData): P
   if (error) return fromDbError(error);
 
   await supabase.from("wishes").update({ status: "planned" }).eq("id", wish.id);
+  await notifyPartner(ctx, {
+    kind: "date_proposed",
+    title: `${me.display_name} te propose un rendez-vous`,
+    body: wish.title,
+    link: "/rendez-vous",
+  });
   revalidatePath("/envies");
   revalidatePath("/rendez-vous");
   redirect("/rendez-vous");

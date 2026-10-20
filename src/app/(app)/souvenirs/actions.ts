@@ -6,12 +6,14 @@ import { MEMORIES_BUCKET } from "@/lib/env";
 import { failure, formToObject, fromDbError, fromZodError, success, type ActionState } from "@/lib/actions";
 import { memorySchema } from "@/lib/validation/schemas";
 import { uuid } from "@/lib/validation/common";
+import { notifyPartner } from "@/lib/notify";
 
 export async function createMemory(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const parsed = memorySchema.safeParse(formToObject(formData));
   if (!parsed.success) return fromZodError(parsed.error);
 
-  const { supabase, userId, couple } = await getCoupleContext();
+  const ctx = await getCoupleContext();
+  const { supabase, userId, couple, me } = ctx;
   const { new_album, photo_paths, ...memory } = parsed.data;
 
   // Les photos ont été envoyées par le navigateur : on n'accepte que des
@@ -43,6 +45,15 @@ export async function createMemory(_prev: ActionState, formData: FormData): Prom
     );
     if (photoError) return fromDbError(photoError, "Le souvenir est enregistré, mais pas ses photos.");
   }
+
+  await notifyPartner(ctx, {
+    kind: "memory",
+    title: `${me.display_name} a ajouté un souvenir`,
+    body: photo_paths.length
+      ? `${memory.title} (${photo_paths.length} photo${photo_paths.length > 1 ? "s" : ""})`
+      : memory.title,
+    link: "/souvenirs",
+  });
 
   revalidatePath("/souvenirs");
   revalidatePath("/accueil");

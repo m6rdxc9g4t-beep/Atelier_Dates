@@ -5,6 +5,8 @@ import { getCoupleContext } from "@/lib/dal";
 import { failure, formToObject, fromDbError, fromZodError, success, type ActionState } from "@/lib/actions";
 import { hintSchema, surpriseSchema } from "@/lib/validation/schemas";
 import { uuid } from "@/lib/validation/common";
+import { notifyPartner } from "@/lib/notify";
+import { formatDateTime } from "@/lib/format";
 
 export async function createSurprise(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const parsed = surpriseSchema.safeParse(formToObject(formData));
@@ -13,7 +15,8 @@ export async function createSurprise(_prev: ActionState, formData: FormData): Pr
     return { status: "error", fieldErrors: { reveal_at: ["Choisis une date dans le futur."] } };
   }
 
-  const { supabase, userId, couple, partner } = await getCoupleContext();
+  const ctx = await getCoupleContext();
+  const { supabase, userId, couple, partner, me } = ctx;
   if (!partner) return failure("Ton amour doit d'abord rejoindre votre espace.");
 
   const { teaser, reveal_at, title, message } = parsed.data;
@@ -32,6 +35,13 @@ export async function createSurprise(_prev: ActionState, formData: FormData): Pr
     await supabase.from("surprises").delete().eq("id", surprise.id);
     return fromDbError(secretError);
   }
+
+  await notifyPartner(ctx, {
+    kind: "surprise",
+    title: `${me.display_name} te prépare une surprise 🎁`,
+    body: `${teaser} — révélation le ${formatDateTime(reveal_at)}`,
+    link: "/surprises",
+  });
 
   revalidatePath("/surprises");
   revalidatePath("/accueil");

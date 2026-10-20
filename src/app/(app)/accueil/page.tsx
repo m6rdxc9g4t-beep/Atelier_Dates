@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { CalendarClock, Gift, MapPin, Vote } from "lucide-react";
+import { Bell, CalendarClock, Gift, MapPin, Vote } from "lucide-react";
+import { ActionForm } from "@/components/ui/action-form";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { markAllNotificationsRead } from "../notifications/actions";
 import { buttonClasses } from "@/components/ui/button";
 import { Countdown } from "@/components/ui/countdown";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InviteCode } from "../parametres/settings-forms";
 import { getCoupleContext } from "@/lib/dal";
 import { daysSince, requestTime, formatDateTime, formatLongDate, plural, todayInTimezone } from "@/lib/format";
+import type { NotificationRow } from "@/lib/supabase/database.types";
+import { cn } from "@/lib/utils";
 import { quoteOfTheDay } from "@/lib/quotes";
 
 export const metadata: Metadata = { title: "Accueil" };
@@ -38,7 +43,7 @@ async function HomeContent() {
   const nowIso = new Date(requestTime()).toISOString();
   const today = todayInTimezone();
 
-  const [nextDate, proposals, myVotes, nextSurprise, lastMemory] = await Promise.all([
+  const [nextDate, proposals, myVotes, nextSurprise, lastMemory, news] = await Promise.all([
     supabase
       .from("date_proposals")
       .select("id, title, proposed_at, location")
@@ -58,6 +63,7 @@ async function HomeContent() {
       .limit(1)
       .maybeSingle(),
     supabase.from("memories").select("title, note, happened_on, location_name").order("happened_on", { ascending: false }).limit(1).maybeSingle(),
+    supabase.from("notifications").select("*").eq("recipient_id", userId).order("created_at", { ascending: false }).limit(5),
   ]);
 
   const voted = new Set((myVotes.data ?? []).map((v) => v.proposal_id));
@@ -101,6 +107,8 @@ async function HomeContent() {
           <InviteCode code={couple.invite_code} />
         </section>
       )}
+
+      {news.data && news.data.length > 0 && <News items={news.data} />}
 
       <div className="grid gap-3 sm:grid-cols-2">
         <Tile icon={CalendarClock} title="Prochain rendez-vous" href="/rendez-vous">
@@ -176,5 +184,48 @@ function Tile({
       </h2>
       {children}
     </Link>
+  );
+}
+
+function News({ items }: { items: NotificationRow[] }) {
+  const unread = items.filter((n) => !n.read_at).length;
+  return (
+    <section aria-labelledby="news-title">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <h2 id="news-title" className="flex items-center gap-2 font-display text-xl text-ink">
+          <Bell className="size-5 text-accent" aria-hidden />
+          Nouveautés
+          {unread > 0 && (
+            <span className="rounded-full bg-accent px-2 py-0.5 font-sans text-xs font-semibold text-accent-ink">{unread}</span>
+          )}
+        </h2>
+        {unread > 0 && (
+          <ActionForm action={markAllNotificationsRead}>
+            <SubmitButton variant="ghost" size="sm" pendingLabel="…">
+              Tout marquer comme lu
+            </SubmitButton>
+          </ActionForm>
+        )}
+      </div>
+      <ul className="divide-y divide-line rounded-[1.75rem] border border-line bg-surface">
+        {items.map((n) => (
+          <li key={n.id}>
+            <Link href={n.link ?? "/accueil"} className="flex items-start gap-3 px-5 py-3.5 transition-colors hover:bg-sunken/60">
+              <span
+                className={cn("mt-2 size-2 shrink-0 rounded-full", n.read_at ? "bg-transparent" : "bg-accent")}
+                aria-label={n.read_at ? undefined : "Non lu"}
+              />
+              <span className="min-w-0 flex-1">
+                <span className={cn("block text-ink", !n.read_at && "font-semibold")}>{n.title}</span>
+                {n.body && <span className="block truncate text-sm text-ink-soft">{n.body}</span>}
+              </span>
+              <time dateTime={n.created_at} className="shrink-0 text-xs text-ink-soft">
+                {formatDateTime(n.created_at)}
+              </time>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

@@ -22,9 +22,9 @@ export function ProfileForm({ profile }: { profile: ProfileRow }) {
         <Input name="phone" type="tel" defaultValue={state.values?.phone ?? profile.phone ?? ""} autoComplete="tel" invalid={!!e?.phone} />
       </Field>
       <fieldset className="space-y-2 sm:col-span-2">
-        <legend className="mb-1 text-sm font-medium text-ink">Me prévenir quand ton amour propose ou répond</legend>
+        <legend className="mb-1 text-sm font-medium text-ink">Me prévenir quand ton amour propose, répond ou prépare une surprise</legend>
         <Toggle name="notify_email" label="Par e-mail" defaultChecked={profile.notify_email} />
-        <Toggle name="notify_sms" label="Par SMS" defaultChecked={profile.notify_sms} />
+        <Toggle name="notify_sms" label="Par SMS (rendez-vous et surprises seulement)" defaultChecked={profile.notify_sms} />
       </fieldset>
       <div className="flex flex-col gap-3 sm:col-span-2">
         <FormMessage state={state} />

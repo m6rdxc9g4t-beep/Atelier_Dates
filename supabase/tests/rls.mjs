@@ -139,6 +139,36 @@ await expectOk("après la date, B voit le secret", async () => {
 await expectFail("C ne peut pas créer de surprise pour A", () => as(U.C, `insert into surprises (couple_id, created_by, recipient_id, teaser, reveal_at) values ($1, $2, $3, 'x', now())`, [c2, U.C, U.A]));
 await expectFail("C ne voit/peut rien dans le couple de A", () => as(U.C, `insert into surprise_hints (surprise_id, couple_id, content, reveal_at) values ($1, $2, 'x', now())`, [s1, c1]));
 
+// Notifications
+// (pas de RETURNING : l'expéditeur ne peut pas relire une notification destinée à l'autre)
+await expectOk("A notifie B", () => as(U.A, `insert into notifications (couple_id, recipient_id, actor_id, kind, title, link) values ($1, $2, $3, 'date_proposed', 'Rdv', '/rendez-vous')`, [c1, U.B, U.A]));
+const [{ id: n1 }] = await as(U.B, `select id from notifications`);
+await expectOk("B voit sa notification", () => as(U.B, `select id from notifications`), (r) => r.length === 1);
+await expectOk("A ne voit pas celle de B", () => as(U.A, `select id from notifications`), (r) => r.length === 0);
+await expectFail("A ne peut pas signer au nom de B", () => as(U.A, `insert into notifications (couple_id, recipient_id, actor_id, kind, title) values ($1, $2, $2, 'test', 'x')`, [c1, U.B]));
+await expectFail("C ne peut pas notifier A", () => as(U.C, `insert into notifications (couple_id, recipient_id, actor_id, kind, title) values ($1, $2, $3, 'test', 'x')`, [c1, U.A, U.C]));
+await expectFail("C ne peut pas viser A depuis son couple", () => as(U.C, `insert into notifications (couple_id, recipient_id, actor_id, kind, title) values ($1, $2, $3, 'test', 'x')`, [c2, U.A, U.C]));
+await expectFail("lien externe refusé", () => as(U.A, `insert into notifications (couple_id, recipient_id, actor_id, kind, title, link) values ($1, $2, $3, 'test', 'x', '//pirate.com')`, [c1, U.B, U.A]));
+await expectOk("B marque comme lu", () => as(U.B, `update notifications set read_at = now() where id = $1 returning id`, [n1]), (r) => r.length === 1);
+await expectFail("B ne peut pas réécrire le titre", () => as(U.B, `update notifications set title = 'x' where id = $1`, [n1]));
+await expectOk("A ne peut pas marquer celle de B (0 ligne)", () => as(U.A, `update notifications set read_at = now() where id = $1 returning id`, [n1]), (r) => r.length === 0);
+await expectOk("A obtient les coordonnées de B", () => as(U.A, `select * from notification_target($1)`, [U.B]), (r) => r.length === 1 && r[0].email === "b@test.fr");
+await expectOk("C n'obtient rien sur B", () => as(U.C, `select * from notification_target($1)`, [U.B]), (r) => r.length === 0);
+await expectOk("B s'abonne au push", () => as(U.B, `insert into push_subscriptions (endpoint, p256dh, auth) values ('https://push.example/b', 'k', 'a') returning user_id`), (r) => r[0].user_id === U.B);
+await expectFail("A ne peut pas abonner B", () => as(U.A, `insert into push_subscriptions (user_id, endpoint, p256dh, auth) values ($1, 'https://push.example/x', 'k', 'a')`, [U.B]));
+await expectOk("A ne lit pas la table des abonnements de B", () => as(U.A, `select * from push_subscriptions`), (r) => r.length === 0);
+await expectOk("A récupère les appareils de B pour l'envoi", () => as(U.A, `select endpoint from push_targets($1)`, [U.B]), (r) => r.length === 1);
+await expectOk("C ne récupère rien", () => as(U.C, `select endpoint from push_targets($1)`, [U.B]), (r) => r.length === 0);
+await expectOk("C ne peut pas supprimer l'abonnement de B", async () => {
+  await as(U.C, `select forget_push_subscription('https://push.example/b')`);
+  return as(U.B, `select id from push_subscriptions`);
+}, (r) => r.length === 1);
+await expectOk("A peut oublier un abonnement expiré de B", async () => {
+  await as(U.A, `select forget_push_subscription('https://push.example/b')`);
+  return as(U.B, `select id from push_subscriptions`);
+}, (r) => r.length === 0);
+await expectOk("anon n'a aucun accès", async () => { try { return await as(null, `select * from notifications`); } catch { return []; } }, (r) => r.length === 0);
+
 await expectFail("fonction interne non appelable", () => as(U.A, `select public.refresh_date_status($1)`, [d1]));
 
 console.log(failures ? `\n${failures} échec(s)` : "\nTous les tests RLS passent.");
