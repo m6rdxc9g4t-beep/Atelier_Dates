@@ -131,7 +131,7 @@ function WishCard({
   const kind = WISH_KINDS.find((k) => k.value === wish.kind)?.label ?? "";
 
   return (
-    <li className="rounded-[1.75rem] border border-line bg-surface p-5">
+    <li className="neon-panel rounded-[1.75rem] border border-line bg-surface p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="flex flex-wrap items-center gap-2 text-xs text-ink-soft">
@@ -164,7 +164,7 @@ function WishCard({
                 value={n}
                 aria-label={`${n} sur 5 — ${DESIRE_LABELS[n]}`}
                 aria-pressed={mine === n}
-                className="rounded-full p-1 text-accent transition-transform hover:scale-110"
+                className="rounded-full p-1 text-accent-strong transition-transform hover:scale-110"
               >
                 <Heart className="size-5" fill={n <= mine ? "currentColor" : "none"} aria-hidden />
               </button>

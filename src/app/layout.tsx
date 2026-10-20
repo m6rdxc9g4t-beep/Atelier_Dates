@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "@fontsource/young-serif/400.css";
 import "@fontsource-variable/figtree";
 import "@fontsource/caveat/500.css";
+import "@/styles/atelier-brand/atelier-brand.css";
 import "./globals.css";
 import { ThemeScript } from "@/components/theme/theme-script";
 
@@ -18,13 +19,13 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#fdf6f8" },
-    { media: "(prefers-color-scheme: dark)", color: "#1c1420" },
+    { media: "(prefers-color-scheme: dark)", color: "#06111f" },
   ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" suppressHydrationWarning className="h-full">
+    <html lang="fr" data-atelier-app="dates" suppressHydrationWarning className="h-full">
       <head>
         <ThemeScript />
       </head>

@@ -60,7 +60,7 @@ export function ExpenseForm({
             <label
               key={o.value}
               className={cn(
-                "cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent",
+                "cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-focus",
                 split === o.value ? "border-accent bg-accent-soft text-ink" : "border-line text-ink-soft hover:bg-sunken",
               )}
             >

@@ -84,6 +84,7 @@ src/
 │   ├── nav/                         # navigation latérale / barre d'onglets mobile
 │   ├── notifications/               # activation du push sur l'appareil, envoi d'un test
 │   └── theme/                       # script anti-flash, sélecteur clair/sombre + accent
+├── styles/atelier-brand/           # marque commune de la suite Atelier (copie exacte, ne pas modifier) + police Nunito (OFL)
 └── lib/
     ├── supabase/                    # clients navigateur/serveur/proxy + types de la base
     ├── dal.ts                       # couche d'accès : utilisateur, couple, partenaire

@@ -153,7 +153,7 @@ function MemoryItem({ memory, photos, album }: { memory: MemoryRow; photos: stri
   return (
     <li className="relative">
       <span className="absolute top-2 -left-[1.6rem] size-3 rounded-full border-2 border-paper bg-accent" aria-hidden />
-      <article className="rounded-[1.75rem] border border-line bg-surface p-5">
+      <article className="neon-panel rounded-[1.75rem] border border-line bg-surface p-5">
         {photos.length > 0 && (
           <div className={photos.length === 1 ? "mb-4" : "mb-4 grid grid-cols-2 gap-2 sm:grid-cols-3"}>
             {photos.map((url, i) => (
@@ -197,7 +197,7 @@ function MemoryItem({ memory, photos, album }: { memory: MemoryRow; photos: stri
             </SubmitButton>
           </ActionForm>
         </div>
-        {memory.note && <p className="mt-3 font-hand text-2xl leading-snug whitespace-pre-line text-accent">{memory.note}</p>}
+        {memory.note && <p className="mt-3 font-hand text-2xl leading-snug whitespace-pre-line text-accent-strong">{memory.note}</p>}
       </article>
     </li>
   );

@@ -101,16 +101,16 @@ function ReceivedSurprise({
 }) {
   const revealed = new Date(surprise.reveal_at).getTime() <= now && secret;
   return (
-    <li className="rounded-[1.75rem] border border-line bg-surface p-5">
+    <li className="neon-panel rounded-[1.75rem] border border-line bg-surface p-5">
       {revealed ? (
         <>
           <p className="text-sm text-ink-soft">{surprise.teaser}</p>
           <h3 className="mt-2 font-display text-2xl text-ink">{secret.title}</h3>
-          {secret.message && <p className="mt-2 font-hand text-2xl leading-snug whitespace-pre-line text-accent">{secret.message}</p>}
+          {secret.message && <p className="mt-2 font-hand text-2xl leading-snug whitespace-pre-line text-accent-strong">{secret.message}</p>}
         </>
       ) : (
         <>
-          <div className="flex items-center gap-2 text-sm font-medium text-accent">
+          <div className="flex items-center gap-2 text-sm font-medium text-accent-strong">
             <Lock className="size-4" aria-hidden />
             Révélation <Countdown to={surprise.reveal_at} />
           </div>
@@ -143,7 +143,7 @@ function PreparedSurprise({
 }) {
   const revealed = new Date(surprise.reveal_at).getTime() <= now;
   return (
-    <li className="rounded-[1.75rem] border border-line bg-surface p-5">
+    <li className="neon-panel rounded-[1.75rem] border border-line bg-surface p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm text-ink-soft">

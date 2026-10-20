@@ -77,7 +77,7 @@ async function PotContent({ params }: { params: Promise<{ id: string }> }) {
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-sunken px-4 py-3">
           <p className="flex items-center gap-2 text-ink">
-            <HandCoins className="size-5 text-accent" aria-hidden />
+            <HandCoins className="size-5 text-accent-strong" aria-hidden />
             <span className="font-medium">{debtSentence(balance.debt, userId, (id) => nameOf(members, id), money)}</span>
           </p>
           {balance.debt && (
@@ -106,7 +106,7 @@ async function PotContent({ params }: { params: Promise<{ id: string }> }) {
           Ajoutez la première : un billet de train, un dîner, une location…
         </EmptyState>
       ) : (
-        <ul className="divide-y divide-line rounded-[1.75rem] border border-line bg-surface">
+        <ul className="neon-panel divide-y divide-line rounded-[1.75rem] border border-line bg-surface">
           {expenses.map((e) => (
             <li key={e.id} className="flex items-center gap-3 px-5 py-3.5">
               <div className="min-w-0 flex-1">

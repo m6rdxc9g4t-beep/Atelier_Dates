@@ -79,23 +79,23 @@ async function HomeContent() {
         </p>
         {days !== null && days >= 0 ? (
           <>
-            <h1 className="mt-3 font-display text-5xl leading-[1.05] text-ink sm:text-6xl">
+            <h1 className="neon-title mt-3 font-display text-5xl leading-[1.05] text-ink sm:text-6xl">
               {days === 0 ? "C'est votre premier jour." : `Ça fait ${plural(days, "jour")}.`}
             </h1>
             <p className="mt-3 text-ink-soft">Ensemble depuis le {formatLongDate(couple.started_on!)}.</p>
           </>
         ) : (
           <>
-            <h1 className="mt-3 font-display text-4xl leading-tight text-ink sm:text-5xl">{couple.name}</h1>
+            <h1 className="neon-title mt-3 font-display text-4xl leading-tight text-ink sm:text-5xl">{couple.name}</h1>
             <p className="mt-3 text-ink-soft">
-              <Link href="/parametres" className="text-accent underline underline-offset-4">
+              <Link href="/parametres" className="text-accent-strong underline underline-offset-4">
                 Ajoutez la date de votre rencontre
               </Link>{" "}
               pour voir le compteur de vos jours ensemble.
             </p>
           </>
         )}
-        <blockquote className="mt-8 max-w-lg font-hand text-3xl leading-snug text-accent">{quoteOfTheDay(today)}</blockquote>
+        <blockquote className="mt-8 max-w-lg font-hand text-3xl leading-snug text-accent-strong">{quoteOfTheDay(today)}</blockquote>
       </section>
 
       {!partner && (
@@ -136,7 +136,7 @@ async function HomeContent() {
         {nextSurprise.data && (
           <Tile icon={Gift} title="Une surprise t'attend" href="/surprises">
             <p className="font-display text-xl text-ink">{nextSurprise.data.teaser}</p>
-            <p className="mt-1 text-sm text-accent">
+            <p className="mt-1 text-sm text-accent-strong">
               Révélation <Countdown to={nextSurprise.data.reveal_at} />
             </p>
           </Tile>
@@ -150,7 +150,7 @@ async function HomeContent() {
                 {formatLongDate(lastMemory.data.happened_on)}
                 {lastMemory.data.location_name && ` — ${lastMemory.data.location_name}`}
               </p>
-              {lastMemory.data.note && <p className="mt-2 line-clamp-2 font-hand text-xl text-accent">{lastMemory.data.note}</p>}
+              {lastMemory.data.note && <p className="mt-2 line-clamp-2 font-hand text-xl text-accent-strong">{lastMemory.data.note}</p>}
             </>
           ) : (
             <p className="text-ink-soft">Votre album attend sa première photo.</p>
@@ -177,9 +177,9 @@ function Tile({
   children: React.ReactNode;
 }) {
   return (
-    <Link href={href} className="group block rounded-[1.75rem] border border-line bg-surface p-5 transition-colors hover:border-accent">
+    <Link href={href} className="group block neon-panel rounded-[1.75rem] border border-line bg-surface p-5 transition-colors hover:border-accent hover:neon-panel-strong">
       <h2 className="mb-3 flex items-center gap-2 text-sm text-ink-soft">
-        <Icon className="size-4 text-accent" aria-hidden />
+        <Icon className="size-4 text-accent-strong" aria-hidden />
         {title}
       </h2>
       {children}
@@ -193,7 +193,7 @@ function News({ items }: { items: NotificationRow[] }) {
     <section aria-labelledby="news-title">
       <div className="mb-3 flex items-center justify-between gap-3">
         <h2 id="news-title" className="flex items-center gap-2 font-display text-xl text-ink">
-          <Bell className="size-5 text-accent" aria-hidden />
+          <Bell className="size-5 text-accent-strong" aria-hidden />
           Nouveautés
           {unread > 0 && (
             <span className="rounded-full bg-accent px-2 py-0.5 font-sans text-xs font-semibold text-accent-ink">{unread}</span>
@@ -207,7 +207,7 @@ function News({ items }: { items: NotificationRow[] }) {
           </ActionForm>
         )}
       </div>
-      <ul className="divide-y divide-line rounded-[1.75rem] border border-line bg-surface">
+      <ul className="neon-panel divide-y divide-line rounded-[1.75rem] border border-line bg-surface">
         {items.map((n) => (
           <li key={n.id}>
             <Link href={n.link ?? "/accueil"} className="flex items-start gap-3 px-5 py-3.5 transition-colors hover:bg-sunken/60">

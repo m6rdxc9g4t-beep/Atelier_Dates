@@ -4,8 +4,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
-   Design tokens — "papier de soie"
-   Fond rosé très pâle, encre aubergine, un accent pastel choisi par le couple.
+   Design tokens — charte Atelier « néon holographique 3D »
+   Clair : "papier de soie" (fond rosé très pâle, encre aubergine), sobre, sans halo.
+   Sombre : bleu nuit, bordures teintées de cyan, effets néon d'atelier-brand.css.
+   Accent = couleur signature de Dates (rouge #E03131, posée par
+   data-atelier-app="dates" sur <html>) ; le couple peut choisir un autre accent.
    --------------------------------------------------------------------------- */
 :root {
   --paper: #fdf6f8;
@@ -15,9 +18,16 @@
   --ink-soft: #7d6878;
   --line: #eedde5;
 
-  --accent: #d1567f;
-  --accent-soft: #f9dce6;
-  --accent-ink: #ffffff;
+  --accent: var(--atelier-signature);
+  --accent-ink: var(--atelier-signature-contrast);
+  /* Dérivés de l'accent : recalculés quel que soit l'accent choisi */
+  --accent-soft: color-mix(in oklab, var(--accent) 16%, transparent);
+  /* Accent lisible en texte ou icône fine sur le fond (le rouge pur est trop clair sur blanc) */
+  --accent-strong: color-mix(in oklab, var(--accent) 62%, var(--ink));
+  /* Halo du bouton principal au survol : seulement en sombre */
+  --accent-glow: 0 0 #0000;
+  /* Anneau de focus cyan (version profonde en clair pour rester visible sur fond pâle) */
+  --focus: var(--atelier-neon-deep);
 
   --yes: #3f9a80;
   --yes-soft: #d9f0e7;
@@ -29,30 +39,32 @@
   color-scheme: light;
 }
 
+/* Accents au choix du couple (Paramètres → Thème) */
+:root[data-accent] {
+  --accent-ink: #ffffff;
+}
 :root[data-accent="lavande"] {
   --accent: #7d68c0;
-  --accent-soft: #e7e1f7;
 }
 :root[data-accent="menthe"] {
   --accent: #3b9479;
-  --accent-soft: #d6efe6;
 }
 :root[data-accent="ciel"] {
   --accent: #4a7fc4;
-  --accent-soft: #dce8f8;
 }
 
 :root.dark {
-  --paper: #1c1420;
-  --surface: #261b2b;
-  --sunken: #2f2235;
-  --ink: #f5e9f0;
-  --ink-soft: #b9a5b5;
-  --line: #3d2e43;
+  --paper: #06111f;
+  --surface: #0a1b2e;
+  --sunken: #10283f;
+  --ink: #e6f7ff;
+  --ink-soft: #8db4cc;
+  --line: #17405c;
 
-  --accent: #ef93b3;
-  --accent-soft: #4a2a3b;
-  --accent-ink: #2a1420;
+  --accent-strong: color-mix(in oklab, var(--accent) 78%, white);
+  --accent-glow: 0 0 0 1px color-mix(in oklab, var(--accent) 55%, transparent),
+    0 0 22px -4px color-mix(in oklab, var(--accent) 60%, transparent);
+  --focus: var(--atelier-neon);
 
   --yes: #7fd0b5;
   --yes-soft: #1f3b33;
@@ -63,17 +75,17 @@
 
   color-scheme: dark;
 }
+:root.dark[data-accent] {
+  --accent-ink: var(--atelier-night);
+}
 :root.dark[data-accent="lavande"] {
   --accent: #b7a6ec;
-  --accent-soft: #352c4d;
 }
 :root.dark[data-accent="menthe"] {
   --accent: #86d3b9;
-  --accent-soft: #1f3b33;
 }
 :root.dark[data-accent="ciel"] {
   --accent: #93bbef;
-  --accent-soft: #22334a;
 }
 
 @theme inline {
@@ -86,6 +98,8 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-strong: var(--accent-strong);
+  --color-focus: var(--focus);
   --color-yes: var(--yes);
   --color-yes-soft: var(--yes-soft);
   --color-maybe: var(--maybe);
@@ -113,9 +127,37 @@
     color: var(--ink);
   }
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
+  /* Sombre : léger halo cyan en haut de page */
+  :root.dark body {
+    background-image: radial-gradient(
+      120% 60% at 50% -10%,
+      color-mix(in oklab, var(--atelier-neon) 10%, transparent),
+      transparent 60%
+    );
+    background-repeat: no-repeat;
+  }
+}
+
+/* Effets néon (jetons d'atelier-brand.css : valent « none » en clair) */
+@utility neon-panel {
+  background-image: var(--atelier-glass);
+  box-shadow: var(--atelier-glow);
+}
+/* Fenêtres, menus, élément mis en avant */
+@utility neon-panel-strong {
+  background-image: var(--atelier-glass);
+  box-shadow: var(--atelier-glow-strong);
+}
+/* Bouton principal au survol / focus */
+@utility glow-accent {
+  box-shadow: var(--accent-glow);
+}
+/* Titres principaux : halo cyan en sombre */
+@utility neon-title {
+  text-shadow: var(--atelier-text-glow);
 }
 
 @media (prefers-reduced-motion: reduce) {

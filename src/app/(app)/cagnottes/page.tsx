@@ -57,7 +57,7 @@ async function PotsContent() {
           <li key={pot.id}>
             <Link
               href={`/cagnottes/${pot.id}`}
-              className="block h-full rounded-[1.75rem] border border-line bg-surface p-5 transition-colors hover:border-accent"
+              className="block h-full neon-panel rounded-[1.75rem] border border-line bg-surface p-5 transition-colors hover:border-accent hover:neon-panel-strong"
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl" aria-hidden>

@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
  */
 export function Disclosure({ label, children, defaultOpen }: { label: string; children: ReactNode; defaultOpen?: boolean }) {
   return (
-    <details className="group mb-8 rounded-[1.75rem] border border-line bg-surface open:pb-2" open={defaultOpen}>
+    <details className="neon-panel group mb-8 rounded-[1.75rem] border border-line bg-surface open:pb-2 open:neon-panel-strong" open={defaultOpen}>
       <summary className="flex cursor-pointer list-none items-center gap-3 rounded-[1.75rem] px-5 py-4 font-medium text-ink hover:bg-sunken/60 [&::-webkit-details-marker]:hidden">
         <span className="grid size-8 place-items-center rounded-full bg-accent text-accent-ink transition-transform group-open:rotate-45">
           <Plus className="size-4" aria-hidden />
