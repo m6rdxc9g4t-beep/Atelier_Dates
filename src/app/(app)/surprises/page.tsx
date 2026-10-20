@@ -101,7 +101,7 @@ function ReceivedSurprise({
 }) {
   const revealed = new Date(surprise.reveal_at).getTime() <= now && secret;
   return (
-    <li className="neon-panel rounded-[1.75rem] border border-line bg-surface p-5">
+    <li className="neon-panel rounded-[1.75rem] border border-edge bg-surface p-5">
       {revealed ? (
         <>
           <p className="text-sm text-ink-soft">{surprise.teaser}</p>
@@ -143,7 +143,7 @@ function PreparedSurprise({
 }) {
   const revealed = new Date(surprise.reveal_at).getTime() <= now;
   return (
-    <li className="neon-panel rounded-[1.75rem] border border-line bg-surface p-5">
+    <li className="neon-panel rounded-[1.75rem] border border-edge bg-surface p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm text-ink-soft">

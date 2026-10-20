@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 export default function AppLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="mx-auto flex min-h-dvh max-w-6xl">
-      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col gap-8 px-5 py-8 lg:flex dark:border-r dark:border-line">
+      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col gap-8 px-5 py-8 lg:flex lg:border-r lg:border-edge lg:bg-sidebar">
         <AtelierBrand className="px-4" />
         <Suspense fallback={<div className="h-14" />}>
           <CoupleBadge />

@@ -106,7 +106,7 @@ async function PotContent({ params }: { params: Promise<{ id: string }> }) {
           Ajoutez la première : un billet de train, un dîner, une location…
         </EmptyState>
       ) : (
-        <ul className="neon-panel divide-y divide-line rounded-[1.75rem] border border-line bg-surface">
+        <ul className="neon-panel divide-y divide-line rounded-[1.75rem] border border-edge bg-surface">
           {expenses.map((e) => (
             <li key={e.id} className="flex items-center gap-3 px-5 py-3.5">
               <div className="min-w-0 flex-1">

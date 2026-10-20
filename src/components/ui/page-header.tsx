@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** En-tête de page : titre en Young Serif (halo cyan en sombre), phrase d'intro, action optionnelle */
+/** En-tête de page : titre en Young Serif (halo de la couleur de l'app), phrase d'intro, action optionnelle */
 export function PageHeader({
   title,
   intro,

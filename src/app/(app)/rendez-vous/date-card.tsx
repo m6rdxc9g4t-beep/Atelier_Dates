@@ -30,7 +30,7 @@ export function DateCard({
   const isAuthor = proposal.created_by === userId;
 
   return (
-    <article className="neon-panel rounded-[1.75rem] border border-line bg-surface p-5">
+    <article className="neon-panel rounded-[1.75rem] border border-edge bg-surface p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="font-display text-lg leading-snug text-ink">{proposal.title}</h3>

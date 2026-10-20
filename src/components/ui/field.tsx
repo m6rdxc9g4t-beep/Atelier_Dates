@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 const control =
-  "w-full rounded-2xl border border-line bg-surface px-4 py-2.5 text-ink placeholder:text-ink-soft/70 " +
-  "transition-colors focus:border-focus focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-focus/30 " +
+  "w-full rounded-2xl border border-edge-soft bg-field px-4 py-2.5 text-ink placeholder:text-ink-soft/70 " +
+  "transition-colors focus:border-accent focus:outline-none focus-visible:outline-none focus:focus-glow " +
   "aria-[invalid=true]:border-no";
 
 type FieldProps = {

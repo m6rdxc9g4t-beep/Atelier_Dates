@@ -15,7 +15,7 @@ export function OnboardingForms({ defaultName }: { defaultName: string }) {
 
   return (
     <div>
-      <div role="tablist" aria-label="Choix" className="mb-6 grid grid-cols-2 rounded-full bg-sunken p-1">
+      <div role="tablist" aria-label="Choix" className="mb-6 grid grid-cols-2 rounded-full border border-edge-soft bg-accent-faint p-1">
         {(
           [
             ["create", "Je crée notre espace"],
@@ -30,7 +30,7 @@ export function OnboardingForms({ defaultName }: { defaultName: string }) {
             onClick={() => setMode(value)}
             className={cn(
               "rounded-full py-2 text-sm font-medium transition-colors",
-              mode === value ? "bg-surface text-ink" : "text-ink-soft hover:text-ink",
+              mode === value ? "bg-selected text-ink" : "text-ink-soft hover:text-ink",
             )}
           >
             {label}

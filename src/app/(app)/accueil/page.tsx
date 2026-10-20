@@ -177,7 +177,7 @@ function Tile({
   children: React.ReactNode;
 }) {
   return (
-    <Link href={href} className="group block neon-panel rounded-[1.75rem] border border-line bg-surface p-5 transition-colors hover:border-accent hover:neon-panel-strong">
+    <Link href={href} className="group block neon-panel rounded-[1.75rem] border border-edge bg-surface p-5 transition-colors hover:border-accent hover:neon-panel-strong">
       <h2 className="mb-3 flex items-center gap-2 text-sm text-ink-soft">
         <Icon className="size-4 text-accent-strong" aria-hidden />
         {title}
@@ -207,10 +207,10 @@ function News({ items }: { items: NotificationRow[] }) {
           </ActionForm>
         )}
       </div>
-      <ul className="neon-panel divide-y divide-line rounded-[1.75rem] border border-line bg-surface">
+      <ul className="neon-panel divide-y divide-line rounded-[1.75rem] border border-edge bg-surface">
         {items.map((n) => (
           <li key={n.id}>
-            <Link href={n.link ?? "/accueil"} className="flex items-start gap-3 px-5 py-3.5 transition-colors hover:bg-sunken/60">
+            <Link href={n.link ?? "/accueil"} className="flex items-start gap-3 px-5 py-3.5 transition-colors hover:bg-accent-faint">
               <span
                 className={cn("mt-2 size-2 shrink-0 rounded-full", n.read_at ? "bg-transparent" : "bg-accent")}
                 aria-label={n.read_at ? undefined : "Non lu"}

@@ -4,30 +4,32 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
-   Design tokens — charte Atelier « néon holographique 3D »
-   Clair : "papier de soie" (fond rosé très pâle, encre aubergine), sobre, sans halo.
-   Sombre : bleu nuit, bordures teintées de cyan, effets néon d'atelier-brand.css.
-   Accent = couleur signature de Dates (rouge #E03131, posée par
-   data-atelier-app="dates" sur <html>) ; le couple peut choisir un autre accent.
+   Design tokens — charte Atelier « néon monochrome »
+   Toute l'app est dans sa couleur signature (rouge #E03131, posée par
+   data-atelier-app="dates" sur <html>) : fonds, surfaces, bordures, textes et
+   halos sont branchés sur les jetons --atelier-* de atelier-brand.css, qui
+   changent eux-mêmes de valeur en thème sombre (.dark sur <html>).
+   Seules les couleurs qui portent un sens (oui / peut-être / non) restent à part.
    --------------------------------------------------------------------------- */
 :root {
-  --paper: #fdf6f8;
-  --surface: #ffffff;
-  --sunken: #f8ecf1;
-  --ink: #3a2838;
-  --ink-soft: #7d6878;
-  --line: #eedde5;
+  --paper: var(--atelier-bg);
+  --sidebar: var(--atelier-sidebar);
+  --surface: var(--atelier-surface);
+  --sunken: var(--atelier-surface-2); /* survol, pastilles, squelettes */
+  --selected: var(--atelier-surface-3);
+  --field: var(--atelier-field);
+  --ink: var(--atelier-text);
+  --ink-soft: var(--atelier-muted);
+  --edge: var(--atelier-border); /* contour des cartes et panneaux */
+  --edge-soft: var(--atelier-border-soft); /* champs, boutons secondaires, tags */
+  --line: var(--atelier-line); /* séparateurs */
 
   --accent: var(--atelier-signature);
   --accent-ink: var(--atelier-signature-contrast);
-  /* Dérivés de l'accent : recalculés quel que soit l'accent choisi */
-  --accent-soft: color-mix(in oklab, var(--accent) 16%, transparent);
-  /* Accent lisible en texte ou icône fine sur le fond (le rouge pur est trop clair sur blanc) */
-  --accent-strong: color-mix(in oklab, var(--accent) 62%, var(--ink));
-  /* Halo du bouton principal au survol : seulement en sombre */
-  --accent-glow: 0 0 #0000;
-  /* Anneau de focus cyan (version profonde en clair pour rester visible sur fond pâle) */
-  --focus: var(--atelier-neon-deep);
+  --accent-soft: var(--atelier-signature-soft);
+  --accent-faint: var(--atelier-signature-faint);
+  /* Accent lisible en texte ou icône fine (assombri en clair, éclairci en sombre) */
+  --accent-strong: var(--atelier-ink);
 
   --yes: #3f9a80;
   --yes-soft: #d9f0e7;
@@ -39,33 +41,22 @@
   color-scheme: light;
 }
 
-/* Accents au choix du couple (Paramètres → Thème) */
+/* Accents au choix du couple (Paramètres → Thème) : ils remplacent la signature,
+   et toute la palette dérivée suit. */
 :root[data-accent] {
-  --accent-ink: #ffffff;
+  --atelier-signature-contrast: #ffffff;
 }
 :root[data-accent="lavande"] {
-  --accent: #7d68c0;
+  --atelier-signature: #7d68c0;
 }
 :root[data-accent="menthe"] {
-  --accent: #3b9479;
+  --atelier-signature: #3b9479;
 }
 :root[data-accent="ciel"] {
-  --accent: #4a7fc4;
+  --atelier-signature: #4a7fc4;
 }
 
 :root.dark {
-  --paper: #06111f;
-  --surface: #0a1b2e;
-  --sunken: #10283f;
-  --ink: #e6f7ff;
-  --ink-soft: #8db4cc;
-  --line: #17405c;
-
-  --accent-strong: color-mix(in oklab, var(--accent) 78%, white);
-  --accent-glow: 0 0 0 1px color-mix(in oklab, var(--accent) 55%, transparent),
-    0 0 22px -4px color-mix(in oklab, var(--accent) 60%, transparent);
-  --focus: var(--atelier-neon);
-
   --yes: #7fd0b5;
   --yes-soft: #1f3b33;
   --maybe: #e8c46a;
@@ -75,31 +66,24 @@
 
   color-scheme: dark;
 }
-:root.dark[data-accent] {
-  --accent-ink: var(--atelier-night);
-}
-:root.dark[data-accent="lavande"] {
-  --accent: #b7a6ec;
-}
-:root.dark[data-accent="menthe"] {
-  --accent: #86d3b9;
-}
-:root.dark[data-accent="ciel"] {
-  --accent: #93bbef;
-}
 
 @theme inline {
   --color-paper: var(--paper);
+  --color-sidebar: var(--sidebar);
   --color-surface: var(--surface);
   --color-sunken: var(--sunken);
+  --color-selected: var(--selected);
+  --color-field: var(--field);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-line: var(--line);
+  --color-edge: var(--edge);
+  --color-edge-soft: var(--edge-soft);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-faint: var(--accent-faint);
   --color-accent-strong: var(--accent-strong);
-  --color-focus: var(--focus);
   --color-yes: var(--yes);
   --color-yes-soft: var(--yes-soft);
   --color-maybe: var(--maybe);
@@ -117,7 +101,10 @@
     background: var(--paper);
   }
   body {
-    background: var(--paper);
+    /* Fine grille + lueur en haut, dans la couleur de l'app.
+       --atelier-backdrop contient des tailles de motif : uniquement dans le raccourci `background`. */
+    background: var(--atelier-backdrop), var(--atelier-bg);
+    background-attachment: fixed;
     color: var(--ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -127,35 +114,28 @@
     color: var(--ink);
   }
   :focus-visible {
-    outline: 2px solid var(--focus);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
-  }
-  /* Sombre : léger halo cyan en haut de page */
-  :root.dark body {
-    background-image: radial-gradient(
-      120% 60% at 50% -10%,
-      color-mix(in oklab, var(--atelier-neon) 10%, transparent),
-      transparent 60%
-    );
-    background-repeat: no-repeat;
   }
 }
 
-/* Effets néon (jetons d'atelier-brand.css : valent « none » en clair) */
+/* Carte / panneau : halo dans la couleur de l'app (bordure : border-edge) */
 @utility neon-panel {
-  background-image: var(--atelier-glass);
   box-shadow: var(--atelier-glow);
 }
-/* Fenêtres, menus, élément mis en avant */
+/* Élément mis en avant (survol d'une tuile, formulaire ouvert) */
 @utility neon-panel-strong {
-  background-image: var(--atelier-glass);
   box-shadow: var(--atelier-glow-strong);
 }
-/* Bouton principal au survol / focus */
+/* Halo de la signature (bouton principal, barre de progression) */
 @utility glow-accent {
-  box-shadow: var(--accent-glow);
+  box-shadow: var(--atelier-signature-glow);
 }
-/* Titres principaux : halo cyan en sombre */
+/* Anneau de focus des champs (avec focus:border-accent) */
+@utility focus-glow {
+  box-shadow: var(--atelier-focus);
+}
+/* Titres de page : halo de la couleur, dans les deux thèmes */
 @utility neon-title {
   text-shadow: var(--atelier-text-glow);
 }

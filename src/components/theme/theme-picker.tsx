@@ -47,7 +47,7 @@ export function ThemePicker() {
     <div className="space-y-5">
       <fieldset>
         <legend className="mb-2 text-sm font-medium text-ink">Apparence</legend>
-        <div className="inline-flex rounded-full bg-sunken p-1">
+        <div className="inline-flex rounded-full border border-edge-soft bg-accent-faint p-1">
           {THEME_MODES.map((m) => (
             <button
               key={m.value}
@@ -56,7 +56,7 @@ export function ThemePicker() {
               onClick={() => choose(m.value, accent)}
               className={cn(
                 "rounded-full px-4 py-1.5 text-sm transition-colors",
-                mode === m.value ? "bg-surface font-medium text-ink" : "text-ink-soft hover:text-ink",
+                mode === m.value ? "bg-selected font-medium text-ink" : "text-ink-soft hover:text-ink",
               )}
             >
               {m.label}
@@ -75,7 +75,7 @@ export function ThemePicker() {
               onClick={() => choose(mode, a.value)}
               className={cn(
                 "flex items-center gap-2 rounded-full border py-1.5 pr-4 pl-1.5 text-sm transition-colors",
-                accent === a.value ? "border-ink text-ink" : "border-line text-ink-soft hover:text-ink",
+                accent === a.value ? "border-accent bg-accent-soft text-ink" : "border-edge-soft text-ink-soft hover:text-ink",
               )}
             >
               <span className="size-6 rounded-full" style={{ background: a.swatch }} aria-hidden />
