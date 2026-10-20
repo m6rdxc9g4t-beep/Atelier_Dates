@@ -1,6 +1,8 @@
 # Notre Petit Monde
 
-Application web intime pour deux : rendez-vous à valider ensemble, cagnottes façon Tricount, album souvenirs, envies & scénarios, surprises à révélation programmée.
+Application web intime pour deux : rendez-vous à valider ensemble, cagnottes façon Tricount, album souvenirs, envies & scénarios, surprises à révélation programmée, notifications (dans l'app, push, e-mail, SMS).
+
+**En ligne :** https://atelier-dates.vercel.app — installable comme une app (Safari → *Fichier → Ajouter au Dock* sur Mac, *Partager → Sur l'écran d'accueil* sur iPhone).
 
 **Stack :** Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · Tailwind CSS 4 · Supabase (Postgres, Auth, Storage, RLS) · Zod · Lucide · Vercel.
 
@@ -39,9 +41,12 @@ Le bucket Storage `memories` (privé) et ses politiques sont créés par la migr
 
 1. Pousser le dépôt sur GitHub.
 2. Vercel → *Add New Project* → importer le dépôt (framework détecté automatiquement).
-3. *Environment Variables* : `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_SITE_URL` (URL de prod), `NEXT_PUBLIC_APP_TIMEZONE=Europe/Paris`.
-4. Déployer. Chaque push sur `main` redéploie ; chaque PR obtient une préversion.
-5. Reporter l'URL de prod dans Supabase (*Site URL* + *Redirect URLs*).
+3. *Environment Variables* : `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_SITE_URL` (URL de prod), `NEXT_PUBLIC_APP_TIMEZONE=Europe/Paris`, plus celles des notifications (section 7).
+4. *Settings → Functions → Region* : choisir la région de la base Supabase (ici `dub1`, Dublin).
+5. Déployer. Avec l'application GitHub de Vercel installée, chaque push sur `main` redéploie.
+6. Reporter l'URL de prod dans Supabase (*Site URL* + *Redirect URLs*).
+
+> **État actuel :** le projet Vercel `atelier-dates` n'est pas relié à GitHub (l'application GitHub de Vercel n'est pas installée). Les déploiements sont lancés à la demande depuis le dépôt public, via l'API Vercel. Pour les rendre automatiques : vercel.com → *Add New → Project → Import Git Repository → Install*, puis relier `Atelier_Dates` au projet existant.
 
 ## 4. Commandes
 
@@ -51,8 +56,8 @@ Le bucket Storage `memories` (privé) et ses politiques sont créés par la migr
 | `npm run build` | Build de production |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | Types de routes + TypeScript |
-| `npm test` | Tests unitaires (Vitest) : équilibres Tricount, schémas Zod, dates |
-| `npm run test:rls` | Applique la migration dans un Postgres embarqué (PGlite) et vérifie 41 scénarios d'isolation RLS |
+| `npm test` | Tests unitaires (Vitest) : équilibres Tricount, schémas Zod, dates, SMS/e-mails, appels Brevo |
+| `npm run test:rls` | Applique toutes les migrations dans un Postgres embarqué (PGlite) et vérifie les règles d'isolation RLS |
 
 ## 5. Arborescence
 
@@ -61,7 +66,7 @@ src/
 ├── proxy.ts                         # (ex-middleware) rafraîchit la session, protège les routes
 ├── app/
 │   ├── layout.tsx                   # polices, thème, métadonnées
-│   ├── connexion/                   # lien magique (page, formulaire, actions, déconnexion)
+│   ├── connexion/                   # e-mail + mot de passe, ou lien magique ; déconnexion
 │   ├── auth/callback/route.ts       # retour du lien magique (code PKCE ou token_hash)
 │   ├── onboarding/                  # créer le couple ou le rejoindre avec un code
 │   └── (app)/                       # zone connectée : navigation + 7 onglets
@@ -72,10 +77,12 @@ src/
 │       ├── souvenirs/               # timeline, photos (Storage), filtres date/lieu/album
 │       ├── envies/                  # wishlist & scénarios classés par envie commune
 │       ├── surprises/               # teaser + indices + révélation programmée
-│       └── parametres/              # profil, couple, code d'invitation, thème
+│       ├── notifications/actions.ts # push (abonnement), test, tout marquer comme lu
+│       └── parametres/              # profil, couple, notifications, mot de passe, thème
 ├── components/
 │   ├── ui/                          # Button, Field/Input, SubmitButton, ActionForm, Panel…
 │   ├── nav/                         # navigation latérale / barre d'onglets mobile
+│   ├── notifications/               # activation du push sur l'appareil, envoi d'un test
 │   └── theme/                       # script anti-flash, sélecteur clair/sombre + accent
 └── lib/
     ├── supabase/                    # clients navigateur/serveur/proxy + types de la base
@@ -83,10 +90,13 @@ src/
     ├── actions.ts                   # ActionState + traduction des erreurs Postgres
     ├── use-form-action.ts           # useActionState qui conserve les saisies en cas d'erreur
     ├── validation/                  # schémas Zod de tous les formulaires
+    ├── notify/                      # notifications : enregistrement + push, e-mail et SMS (Brevo)
     ├── balances.ts                  # calcul façon Tricount
     └── format.ts  quotes.ts  env.ts
+public/sw.js                         # service worker : affiche les notifications push
 supabase/
-├── migrations/20261018000000_init.sql
+├── migrations/                      # archive v1, schéma, durcissement, notifications
+├── scripts/                         # reprise des données de la v1 / installation en une fois
 └── tests/rls.mjs
 ```
 
@@ -99,10 +109,22 @@ supabase/
 - **Surprises** : le destinataire voit le teaser, mais le contenu secret et chaque indice ne lui sont renvoyés par la base qu'après leur date de révélation.
 - Photos dans un bucket privé, rangées par `{couple_id}/…`, servies par URL signée d'une heure.
 - Tout passe par la session de l'utilisateur ; aucune clé `service_role` dans l'application.
+- **Notifications** : chacun ne lit que les siennes. L'e-mail, le téléphone et les appareils push du partenaire ne sont accessibles que via `notification_target()` / `push_targets()`, limitées au couple.
+- **Migrations** : le connecteur Supabase de Claude bloque les `DROP` (confirmation manuelle) ; les migrations sont écrites sans suppression.
 
-## 7. Prochaines étapes suggérées
+## 7. Notifications
 
-- **Notifications e-mail / SMS** : les préférences sont déjà stockées (`profiles.notify_email`, `notify_sms`, `phone`). Brancher un *Database Webhook* Supabase (insert sur `date_proposals`, `date_votes`, `surprises`) vers une *Edge Function* qui envoie via Resend (e-mail) et Twilio ou Brevo (SMS).
+| Canal | Quand | Configuration |
+| --- | --- | --- |
+| Dans l'app | Toujours (section « Nouveautés » de l'accueil) | Aucune |
+| Push (iPhone, Mac, Android) | Chaque appareil où la personne l'active dans Paramètres. Sur iPhone : depuis l'app installée sur l'écran d'accueil | `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` |
+| E-mail | Si « Par e-mail » est coché dans le profil | `BREVO_API_KEY`, `BREVO_SENDER_EMAIL` (expéditeur vérifié dans Brevo), `BREVO_SENDER_NAME` |
+| SMS | Rendez-vous proposés/validés et surprises, si « Par SMS » est coché et un numéro renseigné | `BREVO_API_KEY` + crédits SMS Brevo, `BREVO_SMS_SENDER` (11 caractères max) |
+
+Événements : proposition de rendez-vous, réponse (et validation), surprise en préparation, nouveau souvenir. L'envoi a lieu après la réponse à l'utilisateur (`after()`), et un canal en panne ne bloque jamais l'action. Bouton « M'envoyer une notification test » dans Paramètres.
+
+## 8. Prochaines étapes suggérées
+
+- Révélation des surprises : notification au moment de la révélation (tâche planifiée Vercel Cron).
 - Temps réel (Supabase Realtime) pour voir le vote de l'autre sans recharger.
 - Widget météo sur l'accueil (Open-Meteo, sans clé).
-- PWA (icône sur l'écran d'accueil du téléphone).
