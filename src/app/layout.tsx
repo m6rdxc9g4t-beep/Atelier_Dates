@@ -4,7 +4,9 @@ import "@fontsource-variable/figtree";
 import "@fontsource/caveat/500.css";
 import "@/styles/atelier-brand/atelier-brand.css";
 import "./globals.css";
+import { Suspense } from "react";
 import { ThemeScript } from "@/components/theme/theme-script";
+import { IphoneIcons, IphoneIconsScript } from "@/components/theme/iphone-icons";
 
 export const metadata: Metadata = {
   title: { default: "Notre Petit Monde", template: "%s · Notre Petit Monde" },
@@ -31,8 +33,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="fr" data-atelier-app="dates" suppressHydrationWarning className="h-full">
       <head>
         <ThemeScript />
+        <IphoneIconsScript />
       </head>
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        {children}
+        <Suspense fallback={null}>
+          <IphoneIcons />
+        </Suspense>
+      </body>
     </html>
   );
 }
