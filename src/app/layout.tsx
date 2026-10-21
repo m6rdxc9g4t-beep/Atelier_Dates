@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   applicationName: "Notre Petit Monde",
   appleWebApp: { capable: true, title: "Petit Monde", statusBarStyle: "default" },
   formatDetection: { telephone: false },
+  // Icône d'écran d'accueil : une seule adresse, servie par le proxy selon l'appareil
+  // (F ♥ A sur iPhone, logo de l'app ailleurs). Changer ?v= force les appareils à la retélécharger.
+  icons: { apple: [{ url: "/apple-touch-icon.png?v=2", sizes: "180x180", type: "image/png" }] },
 };
 
 export const viewport: Viewport = {
