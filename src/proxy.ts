@@ -33,7 +33,7 @@ export const config = {
   matcher: [
     "/apple-touch-icon.png",
     "/manifest.webmanifest",
-    // Tout le reste sauf les fichiers statiques et les images
-    "/((?!_next/static|_next/image|favicon.ico|icon|apple-icon|apple-touch-icon|manifest.webmanifest|icons/|sw\\.js|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|webmanifest)$).*)",
+    // Tout le reste sauf la sonde de santé, les fichiers statiques et les images
+    "/((?!api/health|_next/static|_next/image|favicon.ico|icon|apple-icon|apple-touch-icon|manifest.webmanifest|icons/|sw\\.js|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|webmanifest)$).*)",
   ],
 };
