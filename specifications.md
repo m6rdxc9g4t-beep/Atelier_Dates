@@ -15,5 +15,6 @@
 3. **Cagnottes (Style Tricount) :** Gestion des dépenses communes et des budgets de voyage/activités (qui doit combien à qui).
 4. **Album Souvenirs :** Timeline ou grille de photos avec filtres par date, lieu (géolocalisation/texte) et petit mot doux.
 5. **Wishlist & Scénarios :** Idées d'activités futures, scénarios de week-ends ou de projets classés par envies.
-6. **Surprises :** Module secret pour programmer des indices ou des révélations d'activités futures à dévoiler plus tard.
-7. **Paramètres :** Gestion du profil du couple, notifications, choix du thème graphique.
+6. **Cadeaux :** Liste des objets que chacun aimerait recevoir (ou « pour nous deux »), avec lien du site, photo, prix et précisions facultatifs ; « Je m'en occupe » sur la liste de l'autre reste secret.
+7. **Surprises :** Module secret pour programmer des indices ou des révélations d'activités futures à dévoiler plus tard.
+8. **Paramètres :** Gestion du profil du couple, notifications, choix du thème graphique.

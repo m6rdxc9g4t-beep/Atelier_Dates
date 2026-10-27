@@ -14,6 +14,7 @@ type Props = {
   name?: string;
   value?: string;
   "aria-label"?: string;
+  "aria-pressed"?: boolean;
 };
 
 /** Bouton d'envoi qui se désactive pendant l'exécution de la Server Action */

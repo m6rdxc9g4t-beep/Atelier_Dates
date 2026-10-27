@@ -1,4 +1,4 @@
-import { CalendarHeart, Gift, House, Images, Settings, Sparkles, WalletCards, type LucideIcon } from "lucide-react";
+import { CalendarHeart, Gift, House, Images, Settings, ShoppingBag, Sparkles, WalletCards, type LucideIcon } from "lucide-react";
 
 export type NavItem = { href: string; label: string; short: string; icon: LucideIcon };
 
@@ -8,6 +8,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/cagnottes", label: "Cagnottes", short: "Cagnottes", icon: WalletCards },
   { href: "/souvenirs", label: "Souvenirs", short: "Souvenirs", icon: Images },
   { href: "/envies", label: "Envies & scénarios", short: "Envies", icon: Sparkles },
+  { href: "/cadeaux", label: "Cadeaux", short: "Cadeaux", icon: ShoppingBag },
   { href: "/surprises", label: "Surprises", short: "Surprises", icon: Gift },
 ];
 

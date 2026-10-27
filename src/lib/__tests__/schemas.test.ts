@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   dateProposalSchema,
   expenseSchema,
+  giftSchema,
   joinCoupleSchema,
   memorySchema,
   passwordChangeSchema,
@@ -59,5 +60,17 @@ describe("schémas Zod", () => {
     expect(passwordChangeSchema.safeParse({ password: "court", confirm: "court" }).success).toBe(false);
     expect(passwordChangeSchema.safeParse({ password: "assez-long", confirm: "autre-chose" }).success).toBe(false);
     expect(passwordChangeSchema.safeParse({ password: "assez-long", confirm: "assez-long" }).success).toBe(true);
+  });
+
+  it("cadeau : seul le nom est obligatoire, le lien est complété en https", () => {
+    const minimal = giftSchema.parse({ title: "Un plaid tout doux", url: "", price: "", note: "", photo_path: "" });
+    expect(minimal).toMatchObject({ title: "Un plaid tout doux", url: null, price: null, note: null, photo_path: null, for_whom: "me" });
+    expect(giftSchema.parse({ title: "x", url: "www.boutique.fr/plaid?c=rouge", price: "39,90" })).toMatchObject({
+      url: "https://www.boutique.fr/plaid?c=rouge",
+      price: 39.9,
+    });
+    expect(giftSchema.safeParse({ title: "x", url: "javascript:alert(1)" }).success).toBe(false);
+    expect(giftSchema.safeParse({ title: "x", url: "pas un lien" }).success).toBe(false);
+    expect(giftSchema.safeParse({ title: "" }).success).toBe(false);
   });
 });

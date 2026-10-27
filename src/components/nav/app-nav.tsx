@@ -65,7 +65,7 @@ export const BottomNav = withPathname(function BottomNavView({ pathname }) {
       aria-label="Navigation principale"
       className="neon-panel fixed inset-x-0 bottom-0 z-30 border-t border-edge bg-sidebar/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
     >
-      <ul className="mx-auto grid max-w-lg grid-cols-6">
+      <ul className="mx-auto grid max-w-lg grid-cols-7">
         {NAV_ITEMS.map((item) => {
           const active = isActive(pathname, item.href);
           const Icon = item.icon;
@@ -75,7 +75,7 @@ export const BottomNav = withPathname(function BottomNavView({ pathname }) {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex flex-col items-center gap-1 py-2.5 text-[0.68rem]",
+                  "flex flex-col items-center gap-1 py-2.5 text-[0.62rem] tracking-tight",
                   active ? "font-semibold text-accent-strong" : "text-ink-soft",
                 )}
               >

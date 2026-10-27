@@ -1,6 +1,6 @@
 /**
  * Types de la base Supabase, écrits à la main d'après
- * supabase/migrations/20261018000000_init.sql.
+ * supabase/migrations/ (init, notifications, gifts).
  *
  * Une fois le projet Supabase lié, tu peux les régénérer avec :
  *   npx supabase gen types typescript --linked > src/lib/supabase/database.types.ts
@@ -137,6 +137,29 @@ export type WishDesireRow = {
   updated_at: string;
 };
 
+export type GiftRow = {
+  id: string;
+  couple_id: string;
+  created_by: string;
+  /** null = pour nous deux */
+  wanted_by: string | null;
+  title: string;
+  url: string | null;
+  photo_path: string | null;
+  price: number | null;
+  note: string | null;
+  received_at: string | null;
+  created_at: string;
+};
+
+/** Réservation « je m'en occupe » : visible uniquement par la personne qui réserve */
+export type GiftClaimRow = {
+  gift_id: string;
+  couple_id: string;
+  claimed_by: string;
+  created_at: string;
+};
+
 export type SurpriseRow = {
   id: string;
   couple_id: string;
@@ -236,6 +259,13 @@ export type Database = {
         WishDesireRow,
         Pick<WishDesireRow, "wish_id" | "couple_id" | "user_id" | "level"> & Partial<Pick<WishDesireRow, "updated_at">>
       >;
+      gifts: Table<
+        GiftRow,
+        Pick<GiftRow, "couple_id" | "created_by" | "title"> &
+          Partial<Pick<GiftRow, "wanted_by" | "url" | "photo_path" | "price" | "note">>,
+        Partial<Pick<GiftRow, "title" | "url" | "photo_path" | "price" | "note" | "received_at">>
+      >;
+      gift_claims: Table<GiftClaimRow, Pick<GiftClaimRow, "gift_id" | "couple_id">, never>;
       surprises: Table<SurpriseRow, Pick<SurpriseRow, "couple_id" | "created_by" | "recipient_id" | "teaser" | "reveal_at">>;
       surprise_secrets: Table<
         SurpriseSecretRow,

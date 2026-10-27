@@ -69,13 +69,14 @@ src/
 │   ├── connexion/                   # e-mail + mot de passe, ou lien magique ; déconnexion
 │   ├── auth/callback/route.ts       # retour du lien magique (code PKCE ou token_hash)
 │   ├── onboarding/                  # créer le couple ou le rejoindre avec un code
-│   └── (app)/                       # zone connectée : navigation + 7 onglets
+│   └── (app)/                       # zone connectée : navigation + 8 onglets
 │       ├── layout.tsx  loading.tsx  error.tsx
 │       ├── accueil/                 # compteur de jours, citation du jour, prochain rdv…
 │       ├── rendez-vous/             # propositions + votes "on fait ça ?"
 │       ├── cagnottes/  [id]/        # cagnottes, dépenses, qui doit combien à qui
 │       ├── souvenirs/               # timeline, photos (Storage), filtres date/lieu/album
 │       ├── envies/                  # wishlist & scénarios classés par envie commune
+│       ├── cadeaux/                 # liste de cadeaux (lien, photo facultatifs) + « je m'en occupe » secret
 │       ├── surprises/               # teaser + indices + révélation programmée
 │       ├── notifications/actions.ts # push (abonnement), test, tout marquer comme lu
 │       └── parametres/              # profil, couple, notifications, mot de passe, thème
@@ -107,6 +108,7 @@ supabase/
 - Clés étrangères composites `(id, couple_id)` : impossible de rattacher une dépense, un vote ou une photo à un élément d'un autre couple.
 - Colonnes sensibles verrouillées par privilèges : `couple_id` d'un profil, `invite_code`, statut d'un rendez-vous (il ne change que via les votes ou `complete_date()`).
 - Création / adhésion au couple via fonctions `SECURITY DEFINER` (2 membres maximum).
+- **Cadeaux** : la réservation « je m'en occupe » (`gift_claims`) n'est visible que par la personne qui réserve ; on n'ajoute un objet que pour soi ou pour le couple.
 - **Surprises** : le destinataire voit le teaser, mais le contenu secret et chaque indice ne lui sont renvoyés par la base qu'après leur date de révélation.
 - Photos dans un bucket privé, rangées par `{couple_id}/…`, servies par URL signée d'une heure.
 - Tout passe par la session de l'utilisateur ; aucune clé `service_role` dans l'application.

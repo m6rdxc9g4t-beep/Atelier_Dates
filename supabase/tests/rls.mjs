@@ -122,6 +122,28 @@ const [{ id: w1 }] = await as(U.A, `insert into wishes (couple_id, created_by, t
 await expectOk("A note son envie", () => as(U.A, `insert into wish_desires (wish_id, couple_id, user_id, level) values ($1, $2, $3, 5) returning level`, [w1, c1, U.A]));
 await expectFail("B ne peut pas noter à la place de A", () => as(U.B, `insert into wish_desires (wish_id, couple_id, user_id, level) values ($1, $2, $3, 1)`, [w1, c1, U.A]));
 
+// Cadeaux
+const [{ id: g1 }] = await as(U.A, `insert into gifts (couple_id, created_by, wanted_by, title, url, photo_path) values ($1, $2, $2, 'Appareil photo', 'https://boutique.fr/x', $3) returning id`, [c1, U.A, `${c1}/gifts/a.jpg`]);
+const [{ id: gUs }] = await as(U.A, `insert into gifts (couple_id, created_by, title) values ($1, $2, 'Une machine à pâtes') returning id`, [c1, U.A]);
+await expectOk("B voit la liste de A", () => as(U.B, `select id from gifts`), (r) => r.length === 2);
+await expectOk("C ne voit pas la liste de A", () => as(U.C, `select id from gifts`), (r) => r.length === 0);
+await expectFail("A ne peut pas remplir la liste de B", () => as(U.A, `insert into gifts (couple_id, created_by, wanted_by, title) values ($1, $2, $3, 'x')`, [c1, U.A, U.B]));
+await expectFail("lien qui n'est pas http(s) refusé", () => as(U.A, `insert into gifts (couple_id, created_by, title, url) values ($1, $2, 'x', 'javascript:alert(1)')`, [c1, U.A]));
+await expectFail("photo dans le dossier d'un autre couple refusée", () => as(U.A, `insert into gifts (couple_id, created_by, title, photo_path) values ($1, $2, 'x', $3)`, [c1, U.A, `${c2}/gifts/x.jpg`]));
+await expectFail("C ne peut rien ajouter chez A", () => as(U.C, `insert into gifts (couple_id, created_by, title) values ($1, $2, 'x')`, [c1, U.C]));
+await expectFail("on ne change pas le destinataire d'un cadeau", () => as(U.B, `update gifts set wanted_by = $1 where id = $2`, [U.B, g1]));
+await expectOk("B réserve le cadeau de A", () => as(U.B, `insert into gift_claims (gift_id, couple_id) values ($1, $2) returning claimed_by`, [g1, c1]), (r) => r[0].claimed_by === U.B);
+await expectOk("A ne voit pas que B l'a réservé", () => as(U.A, `select * from gift_claims`), (r) => r.length === 0);
+await expectOk("B voit sa réservation", () => as(U.B, `select * from gift_claims`), (r) => r.length === 1);
+await expectFail("A ne réserve pas son propre cadeau", () => as(U.A, `insert into gift_claims (gift_id, couple_id) values ($1, $2)`, [g1, c1]));
+await expectFail("pas de réservation sur un cadeau « pour nous deux »", () => as(U.B, `insert into gift_claims (gift_id, couple_id) values ($1, $2)`, [gUs, c1]));
+await expectFail("C ne réserve rien chez A", () => as(U.C, `insert into gift_claims (gift_id, couple_id) values ($1, $2)`, [gUs, c1]));
+await expectOk("B marque le cadeau comme offert", () => as(U.B, `update gifts set received_at = now() where id = $1 returning id`, [g1]), (r) => r.length === 1);
+await expectOk("cadeau supprimé → réservation supprimée", async () => {
+  await as(U.A, `delete from gifts where id = $1`, [g1]);
+  return as(U.B, `select * from gift_claims`);
+}, (r) => r.length === 0);
+
 // Surprises
 const [{ id: s1 }] = await as(U.A, `insert into surprises (couple_id, created_by, recipient_id, teaser, reveal_at) values ($1, $2, $3, 'Prépare un sac pour samedi', now() + interval '3 days') returning id`, [c1, U.A, U.B]);
 await as(U.A, `insert into surprise_secrets (surprise_id, couple_id, title, message) values ($1, $2, 'Spa à Deauville', 'On part à 9h')`, [s1, c1]);

@@ -154,3 +154,26 @@ export const hintSchema = z.object({
   content: requiredText(500, "L'indice"),
   reveal_at: requiredDateTime,
 });
+
+// --- Cadeaux -----------------------------------------------------------------
+/** Lien facultatif : « boutique.fr/objet » devient « https://boutique.fr/objet » */
+export const optionalUrl = z.preprocess(
+  (v) => {
+    const s = typeof v === "string" ? v.trim() : "";
+    if (!s) return null;
+    return /^[a-z][a-z0-9+.-]*:/i.test(s) ? s : `https://${s.replace(/^\/+/, "")}`;
+  },
+  z
+    .url({ protocol: /^https?$/, error: "Ce lien ne ressemble pas à une adresse de site (https://…)." })
+    .max(2000, "Lien trop long.")
+    .nullable(),
+);
+
+export const giftSchema = z.object({
+  title: requiredText(120, "Le nom de l'objet"),
+  url: optionalUrl,
+  price: optionalAmount,
+  note: optionalText(1000),
+  for_whom: z.enum(["me", "us"]).default("me"),
+  photo_path: optionalText(300),
+});
