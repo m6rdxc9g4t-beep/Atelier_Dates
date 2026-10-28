@@ -3,6 +3,7 @@ import {
   dateProposalSchema,
   expenseSchema,
   giftSchema,
+  giftUpdateSchema,
   joinCoupleSchema,
   memorySchema,
   passwordChangeSchema,
@@ -72,5 +73,19 @@ describe("schémas Zod", () => {
     expect(giftSchema.safeParse({ title: "x", url: "javascript:alert(1)" }).success).toBe(false);
     expect(giftSchema.safeParse({ title: "x", url: "pas un lien" }).success).toBe(false);
     expect(giftSchema.safeParse({ title: "" }).success).toBe(false);
+  });
+
+  it("modification de cadeau : identifiant obligatoire, photo à retirer, champs vidés → null", () => {
+    expect(giftUpdateSchema.parse({ gift_id: id, title: "Plaid", url: "", price: "", note: "", remove_photo: "1" })).toMatchObject({
+      gift_id: id,
+      url: null,
+      price: null,
+      note: null,
+      remove_photo: true,
+    });
+    expect(giftUpdateSchema.parse({ gift_id: id, title: "Plaid", remove_photo: "" }).remove_photo).toBe(false);
+    expect(giftUpdateSchema.safeParse({ title: "Plaid" }).success).toBe(false);
+    // le destinataire ne se change pas
+    expect("for_whom" in giftUpdateSchema.parse({ gift_id: id, title: "Plaid", for_whom: "us" })).toBe(false);
   });
 });

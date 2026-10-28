@@ -177,3 +177,9 @@ export const giftSchema = z.object({
   for_whom: z.enum(["me", "us"]).default("me"),
   photo_path: optionalText(300),
 });
+
+/** Modification : le destinataire ne change pas ; la photo peut être gardée, remplacée ou retirée */
+export const giftUpdateSchema = giftSchema.omit({ for_whom: true }).extend({
+  gift_id: uuid,
+  remove_photo: z.preprocess((v) => v === "1" || v === "on", z.boolean()),
+});

@@ -6,6 +6,7 @@ import { formatMoney } from "@/lib/format";
 import type { GiftRow } from "@/lib/supabase/database.types";
 import { cn } from "@/lib/utils";
 import { deleteGift, toggleClaim, toggleReceived } from "./actions";
+import { GiftEditor } from "./gift-editor";
 
 /** À qui est le cadeau, vu par la personne connectée */
 export type Who = "mine" | "theirs" | "ours";
@@ -22,7 +23,19 @@ function siteName(url: string) {
   }
 }
 
-export function GiftCard({ gift, who, photo, claimed }: { gift: GiftRow; who: Who; photo?: string; claimed: boolean }) {
+export function GiftCard({
+  gift,
+  who,
+  photo,
+  claimed,
+  coupleId,
+}: {
+  gift: GiftRow;
+  who: Who;
+  photo?: string;
+  claimed: boolean;
+  coupleId: string;
+}) {
   const isReceived = !!gift.received_at;
 
   return (
@@ -89,6 +102,8 @@ export function GiftCard({ gift, who, photo, claimed }: { gift: GiftRow; who: Wh
               </SubmitButton>
             </ActionForm>
           )}
+          {/* On modifie ses propres envies et celles du couple ; la liste de l'autre lui appartient */}
+          {who !== "theirs" && <GiftEditor gift={gift} coupleId={coupleId} currentPhoto={photo} />}
         </div>
         {claimed && !isReceived && <p className="mt-2 text-xs text-ink-soft">Chut, l&apos;autre ne voit pas que tu t&apos;en occupes.</p>}
       </div>

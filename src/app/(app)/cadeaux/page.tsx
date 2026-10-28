@@ -83,7 +83,7 @@ async function GiftsContent() {
                   {s.items.length ? (
                     <GiftGrid>
                       {s.items.map((g) => (
-                        <GiftCard key={g.id} gift={g} who={s.key} photo={g.photo_path ? photoByPath.get(g.photo_path) : undefined} claimed={claimed.has(g.id)} />
+                        <GiftCard key={g.id} gift={g} who={s.key} photo={g.photo_path ? photoByPath.get(g.photo_path) : undefined} claimed={claimed.has(g.id)} coupleId={couple.id} />
                       ))}
                     </GiftGrid>
                   ) : (
@@ -97,7 +97,7 @@ async function GiftsContent() {
               <SectionTitle count={received.length}>Déjà offerts</SectionTitle>
               <GiftGrid className="opacity-80">
                 {received.map((g) => (
-                  <GiftCard key={g.id} gift={g} who={who(g)} photo={g.photo_path ? photoByPath.get(g.photo_path) : undefined} claimed={false} />
+                  <GiftCard key={g.id} gift={g} who={who(g)} photo={g.photo_path ? photoByPath.get(g.photo_path) : undefined} claimed={false} coupleId={couple.id} />
                 ))}
               </GiftGrid>
             </section>

@@ -9,6 +9,8 @@ const control =
 type FieldProps = {
   label: string;
   name: string;
+  /** Identifiant du champ, si le même formulaire apparaît plusieurs fois dans la page (par défaut : name) */
+  id?: string;
   hint?: string;
   errors?: string[];
   children: ReactNode;
@@ -16,20 +18,20 @@ type FieldProps = {
 };
 
 /** Libellé + contrôle + aide + erreurs, reliés par aria-describedby */
-export function Field({ label, name, hint, errors, children, className }: FieldProps) {
+export function Field({ label, name, id = name, hint, errors, children, className }: FieldProps) {
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
-      <label htmlFor={name} className="text-sm font-medium text-ink">
+      <label htmlFor={id} className="text-sm font-medium text-ink">
         {label}
       </label>
       {children}
       {hint && !errors?.length && (
-        <p id={`${name}-hint`} className="text-xs text-ink-soft">
+        <p id={`${id}-hint`} className="text-xs text-ink-soft">
           {hint}
         </p>
       )}
       {errors?.length ? (
-        <p id={`${name}-error`} className="text-xs font-medium text-no" role="alert">
+        <p id={`${id}-error`} className="text-xs font-medium text-no" role="alert">
           {errors[0]}
         </p>
       ) : null}

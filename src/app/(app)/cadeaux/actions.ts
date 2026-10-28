@@ -4,10 +4,18 @@ import { revalidatePath } from "next/cache";
 import { getCoupleContext } from "@/lib/dal";
 import { MEMORIES_BUCKET } from "@/lib/env";
 import { failure, formToObject, fromDbError, fromZodError, success, type ActionState } from "@/lib/actions";
-import { giftSchema } from "@/lib/validation/schemas";
+import { giftSchema, giftUpdateSchema } from "@/lib/validation/schemas";
 import { uuid } from "@/lib/validation/common";
 
 const PAGE = "/cadeaux";
+
+/**
+ * La photo a été envoyée par le navigateur : on n'accepte qu'un chemin
+ * rangé dans le dossier du couple (RLS Storage + contrainte SQL en renfort).
+ */
+function isSafePhotoPath(path: string, coupleId: string) {
+  return new RegExp(`^${coupleId}/gifts/[\\w-]+\\.(jpe?g|png|webp|gif|heic|heif)$`, "i").test(path);
+}
 
 export async function createGift(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const parsed = giftSchema.safeParse(formToObject(formData));
@@ -15,11 +23,7 @@ export async function createGift(_prev: ActionState, formData: FormData): Promis
 
   const { supabase, userId, couple } = await getCoupleContext();
   const { for_whom, photo_path, ...gift } = parsed.data;
-
-  // La photo a été envoyée par le navigateur : on n'accepte qu'un chemin
-  // rangé dans le dossier du couple (RLS Storage + contrainte SQL en renfort).
-  const safePath = new RegExp(`^${couple.id}/gifts/[\\w-]+\\.(jpe?g|png|webp|gif|heic|heif)$`, "i");
-  if (photo_path && !safePath.test(photo_path)) return failure("La photo n'a pas un emplacement valide.");
+  if (photo_path && !isSafePhotoPath(photo_path, couple.id)) return failure("La photo n'a pas un emplacement valide.");
 
   const { error } = await supabase.from("gifts").insert({
     ...gift,
@@ -35,6 +39,40 @@ export async function createGift(_prev: ActionState, formData: FormData): Promis
 
   revalidatePath(PAGE);
   return success("Ajouté à la liste de cadeaux.");
+}
+
+/** Modifie un cadeau : nom, lien, prix, précisions, et photo gardée, remplacée ou retirée */
+export async function updateGift(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const parsed = giftUpdateSchema.safeParse(formToObject(formData));
+  if (!parsed.success) return fromZodError(parsed.error);
+
+  const { supabase, couple } = await getCoupleContext();
+  const { gift_id, photo_path: newPhoto, remove_photo, ...fields } = parsed.data;
+  const discardUpload = async () => {
+    if (newPhoto) await supabase.storage.from(MEMORIES_BUCKET).remove([newPhoto]);
+  };
+  if (newPhoto && !isSafePhotoPath(newPhoto, couple.id)) return failure("La photo n'a pas un emplacement valide.");
+
+  const { data: current } = await supabase.from("gifts").select("photo_path").eq("id", gift_id).maybeSingle();
+  if (!current) {
+    await discardUpload();
+    return failure("Ce cadeau n'existe plus.");
+  }
+
+  const photo_path = newPhoto ?? (remove_photo ? null : current.photo_path);
+  const { error } = await supabase.from("gifts").update({ ...fields, photo_path }).eq("id", gift_id);
+  if (error) {
+    await discardUpload();
+    return fromDbError(error);
+  }
+
+  // L'ancienne photo n'est plus utilisée : on la retire du stockage (sans bloquer si ça échoue)
+  if (current.photo_path && current.photo_path !== photo_path) {
+    await supabase.storage.from(MEMORIES_BUCKET).remove([current.photo_path]);
+  }
+
+  revalidatePath(PAGE);
+  return success("Modifications enregistrées.");
 }
 
 /** Offert / reçu, ou retour dans la liste */

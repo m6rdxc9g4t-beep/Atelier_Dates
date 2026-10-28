@@ -138,6 +138,9 @@ await expectOk("B voit sa réservation", () => as(U.B, `select * from gift_claim
 await expectFail("A ne réserve pas son propre cadeau", () => as(U.A, `insert into gift_claims (gift_id, couple_id) values ($1, $2)`, [g1, c1]));
 await expectFail("pas de réservation sur un cadeau « pour nous deux »", () => as(U.B, `insert into gift_claims (gift_id, couple_id) values ($1, $2)`, [gUs, c1]));
 await expectFail("C ne réserve rien chez A", () => as(U.C, `insert into gift_claims (gift_id, couple_id) values ($1, $2)`, [gUs, c1]));
+await expectOk("A modifie son cadeau (nom, lien, prix, photo)", () => as(U.A, `update gifts set title = 'Appareil photo instantané', url = 'https://boutique.fr/y', price = 89.9, photo_path = $2 where id = $1 returning title`, [g1, `${c1}/gifts/b.jpg`]), (r) => r.length === 1);
+await expectFail("photo modifiée vers le dossier d'un autre couple refusée", () => as(U.A, `update gifts set photo_path = $2 where id = $1`, [g1, `${c2}/gifts/x.jpg`]));
+await expectOk("C ne peut pas modifier le cadeau de A (0 ligne)", () => as(U.C, `update gifts set title = 'x' where id = $1 returning id`, [g1]), (r) => r.length === 0);
 await expectOk("B marque le cadeau comme offert", () => as(U.B, `update gifts set received_at = now() where id = $1 returning id`, [g1]), (r) => r.length === 1);
 await expectOk("cadeau supprimé → réservation supprimée", async () => {
   await as(U.A, `delete from gifts where id = $1`, [g1]);
