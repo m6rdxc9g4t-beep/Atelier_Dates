@@ -6,7 +6,7 @@ import "@/styles/atelier-brand/atelier-brand.css";
 import "./globals.css";
 import { Suspense } from "react";
 import { ThemeScript } from "@/components/theme/theme-script";
-import { IphoneIcons, IphoneIconsScript } from "@/components/theme/iphone-icons";
+import { AppIcons, AppIconsScript } from "@/components/theme/app-icons";
 
 export const metadata: Metadata = {
   title: { default: "Notre Petit Monde", template: "%s · Notre Petit Monde" },
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
   applicationName: "Notre Petit Monde",
   appleWebApp: { capable: true, title: "Petit Monde", statusBarStyle: "default" },
   formatDetection: { telephone: false },
-  // Icône d'écran d'accueil : une seule adresse, servie par le proxy selon l'appareil
-  // (F ♥ A sur iPhone, logo de l'app ailleurs). Changer ?v= force les appareils à la retélécharger.
-  icons: { apple: [{ url: "/apple-touch-icon.png?v=2", sizes: "180x180", type: "image/png" }] },
+  // Icône d'écran d'accueil : une seule adresse, servie par le proxy selon le choix fait sur l'appareil
+  // (src/lib/app-icon.ts) ; le script AppIconsScript la remplace dans la page par l'adresse propre à l'icône.
+  icons: { apple: [{ url: "/apple-touch-icon.png?v=3", sizes: "180x180", type: "image/png" }] },
 };
 
 export const viewport: Viewport = {
@@ -33,12 +33,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="fr" data-atelier-app="dates" suppressHydrationWarning className="h-full">
       <head>
         <ThemeScript />
-        <IphoneIconsScript />
+        <AppIconsScript />
       </head>
       <body className="min-h-full">
         {children}
         <Suspense fallback={null}>
-          <IphoneIcons />
+          <AppIcons />
         </Suspense>
       </body>
     </html>

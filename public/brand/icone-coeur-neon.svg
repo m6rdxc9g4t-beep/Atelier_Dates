@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- atelier_Dates : icône simplifiée (charte néon, carré arrondi seul), même construction que atelier_Cuisine, en rouge #E03131 -->
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#341619"/>
+      <stop offset="1" stop-color="#120708"/>
+    </linearGradient>
+    <radialGradient id="brume" cx="0.5" cy="0.54" r="0.5">
+      <stop offset="0" stop-color="#E03131" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#E03131" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fde9e9"/>
+      <stop offset="0.35" stop-color="#f06a6a"/>
+      <stop offset="0.7" stop-color="#8f1d1d"/>
+      <stop offset="1" stop-color="#f06a6a"/>
+    </linearGradient>
+    <linearGradient id="rouge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9a9a"/>
+      <stop offset="0.45" stop-color="#E03131"/>
+      <stop offset="1" stop-color="#8f1d1d"/>
+    </linearGradient>
+    <filter id="halo" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="22" result="flou"/>
+      <feMerge><feMergeNode in="flou"/><feMergeNode in="flou"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="halo-fin" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="flou"/>
+      <feMerge><feMergeNode in="flou"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" rx="230" fill="url(#fond)"/>
+  <rect width="1024" height="1024" rx="230" fill="url(#brume)"/>
+  <!-- cadre chromé lumineux -->
+  <rect x="44" y="44" width="936" height="936" rx="196" fill="none" stroke="url(#chrome)" stroke-width="22" filter="url(#halo-fin)"/>
+  <rect x="70" y="70" width="884" height="884" rx="174" fill="none" stroke="#E03131" stroke-opacity="0.3" stroke-width="4"/>
+  <!-- cœur néon -->
+  <path filter="url(#halo)" fill="url(#rouge)" stroke="#ffc4c4" stroke-width="10" stroke-linejoin="round"
+    d="M512 800C468 764 228 606 228 412C228 308 306 232 402 232C456 232 492 260 512 294C532 260 568 232 622 232C718 232 796 308 796 412C796 606 556 764 512 800Z"/>
+  <!-- reflets spéculaires -->
+  <path d="M300 420C300 356 342 312 398 306" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="680" cy="330" r="12" fill="#ffffff" opacity="0.5"/>
+  <circle cx="210" cy="132" r="9" fill="#fde9e9"/>
+  <circle cx="210" cy="132" r="26" fill="#fde9e9" opacity="0.18"/>
+  <circle cx="862" cy="880" r="7" fill="#fde9e9"/>
+</svg>

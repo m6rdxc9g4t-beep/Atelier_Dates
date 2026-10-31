@@ -4,6 +4,8 @@ Application web intime pour deux : rendez-vous à valider ensemble, cagnottes fa
 
 **En ligne :** https://atelier-dates.vercel.app — installable comme une app (Safari → *Fichier → Ajouter au Dock* sur Mac, *Partager → Sur l'écran d'accueil* sur iPhone).
 
+**Icône de l'app**, au choix sur chaque appareil (*Paramètres → Icône de l'app*) : **F ♥ A** ou **cœur néon** (charte atelier, même construction que l'icône d'atelier_Cuisine). Sans choix : F ♥ A sur iPhone, cœur néon ailleurs. Le choix est gardé dans le cookie `app_icon` (lu par `src/proxy.ts` et `src/components/theme/app-icons.tsx`, logique dans `src/lib/app-icon.ts`). Une icône déjà posée ne change pas d'elle-même : choisir dans Safari, supprimer l'ancienne icône puis rajouter l'app. Source du cœur néon : `public/brand/icone-coeur-neon.svg` ; PNG régénérés par `node scripts/icones.mjs`.
+
 **Stack :** Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · Tailwind CSS 4 · Supabase (Postgres, Auth, Storage, RLS) · Zod · Lucide · Vercel.
 
 ---

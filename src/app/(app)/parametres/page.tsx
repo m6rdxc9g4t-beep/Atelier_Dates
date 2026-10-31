@@ -6,6 +6,7 @@ import { Panel, SectionTitle } from "@/components/ui/panel";
 import { ListSkeleton } from "@/components/ui/skeleton";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { ThemePicker } from "@/components/theme/theme-picker";
+import { AppIconPicker } from "@/components/theme/app-icon-picker";
 import { PushSettings } from "@/components/notifications/push-settings";
 import { TestNotification } from "@/components/notifications/test-notification";
 import { getCoupleContext } from "@/lib/dal";
@@ -40,6 +41,10 @@ export default function SettingsPage() {
         <Panel>
           <SectionTitle>Thème</SectionTitle>
           <ThemePicker />
+        </Panel>
+        <Panel>
+          <SectionTitle>Icône de l&apos;app</SectionTitle>
+          <AppIconPicker />
         </Panel>
         <form action={signOut}>
           <SubmitButton variant="ghost" pendingLabel="Déconnexion…">
