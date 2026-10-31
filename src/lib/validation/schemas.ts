@@ -58,10 +58,20 @@ export const passwordLoginSchema = loginSchema.extend({
   password: z.string({ error: "Indique ton mot de passe." }).min(1, "Indique ton mot de passe.").max(200),
 });
 
+const newPassword = z.string({ error: "Choisis un mot de passe." }).min(8, "8 caractères minimum.").max(200, "200 caractères maximum.");
+
 export const passwordChangeSchema = z
   .object({
-    password: z.string().min(8, "8 caractères minimum.").max(200, "200 caractères maximum."),
+    password: newPassword,
     confirm: z.string(),
+  })
+  .refine((v) => v.password === v.confirm, { path: ["confirm"], error: "Les deux mots de passe ne correspondent pas." });
+
+/** Création de compte : e-mail + mot de passe choisi (et confirmé) */
+export const signUpSchema = loginSchema
+  .extend({
+    password: newPassword,
+    confirm: z.string({ error: "Confirme ton mot de passe." }),
   })
   .refine((v) => v.password === v.confirm, { path: ["confirm"], error: "Les deux mots de passe ne correspondent pas." });
 

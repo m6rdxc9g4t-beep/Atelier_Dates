@@ -33,6 +33,11 @@ npm run dev                   # http://localhost:3000
    <h2>Ton lien pour Notre Petit Monde</h2>
    <p><a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email">Entrer dans notre petit monde</a></p>
    ```
+   Même chose pour **Confirm signup** (e-mail envoyé à la création d'un compte avec mot de passe) :
+   ```html
+   <h2>Bienvenue dans Notre Petit Monde</h2>
+   <p><a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email&next=/onboarding">Confirmer mon adresse</a></p>
+   ```
 6. **Auth → SMTP** : le service d'e-mail intégré de Supabase est limité à quelques envois par heure. Branche un SMTP (Resend, Brevo…) avant de vraiment l'utiliser.
 
 Le bucket Storage `memories` (privé) et ses politiques sont créés par la migration.

@@ -8,6 +8,7 @@ import {
   memorySchema,
   passwordChangeSchema,
   passwordLoginSchema,
+  signUpSchema,
   profileSettingsSchema,
 } from "@/lib/validation/schemas";
 
@@ -61,6 +62,16 @@ describe("schémas Zod", () => {
     expect(passwordChangeSchema.safeParse({ password: "court", confirm: "court" }).success).toBe(false);
     expect(passwordChangeSchema.safeParse({ password: "assez-long", confirm: "autre-chose" }).success).toBe(false);
     expect(passwordChangeSchema.safeParse({ password: "assez-long", confirm: "assez-long" }).success).toBe(true);
+  });
+
+  it("création de compte : e-mail nettoyé, mot de passe de 8 caractères confirmé", () => {
+    const ok = signUpSchema.parse({ email: " Lea@Exemple.fr ", password: "assez-long", confirm: "assez-long", next: "" });
+    expect(ok).toEqual({ email: "lea@exemple.fr", password: "assez-long", confirm: "assez-long", next: undefined });
+    expect(signUpSchema.safeParse({ email: "lea@exemple.fr", password: "court", confirm: "court" }).success).toBe(false);
+    const mismatch = signUpSchema.safeParse({ email: "lea@exemple.fr", password: "assez-long", confirm: "autre-chose" });
+    expect(mismatch.success).toBe(false);
+    expect(mismatch.error?.issues[0].path).toEqual(["confirm"]);
+    expect(signUpSchema.safeParse({ email: "pas-une-adresse", password: "assez-long", confirm: "assez-long" }).success).toBe(false);
   });
 
   it("cadeau : seul le nom est obligatoire, le lien est complété en https", () => {
