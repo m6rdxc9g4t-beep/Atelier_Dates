@@ -5,8 +5,8 @@
 
 /* ---------------------------------------------------------------------------
    Design tokens — charte Atelier v2 « Linear » (Atelier_Deploy/DESIGN.md)
-   Structure neutre commune (gris froids, clair et sombre) branchée sur les jetons --atelier-*
-   du kit (src/styles/atelier-brand/atelier-brand.css) ; la signature de Dates (rouge #db373a,
+   Palette du foyer (Dates, Suivi, Cuisine) : crème en clair, bleu nuit en sombre, branchée sur les
+   jetons --atelier-* du kit (src/styles/atelier-brand/atelier-brand.css, §3 bis) ; la signature de Dates (rouge #db373a,
    posée par data-atelier-app="dates" sur <html>) ne sert qu'à l'accent : bouton principal,
    sélection, focus, liens, cœurs d'envie. La chaleur vient du contenu (photos, mots, dates).
    Couleurs à part (elles portent un sens) : oui / peut-être / non des votes, réussite / erreur.
@@ -19,7 +19,8 @@
   --selected: var(--atelier-surface-3); /* élément courant (navigation, segment) */
   --field: var(--atelier-field);
   --ink: var(--atelier-text);
-  --ink-2: #393c42; /* libellés de navigation et de champ */
+  /* Libellés de navigation et de champ : entre le texte et le gris, dérivé de la palette (crème ou bleu nuit) */
+  --ink-2: color-mix(in oklab, var(--atelier-text) 80%, var(--atelier-muted));
   --muted: var(--atelier-muted);
   --faint: var(--atelier-faint);
   --edge: var(--atelier-border); /* contour des cartes et panneaux */
@@ -34,12 +35,13 @@
   --accent-strong: var(--atelier-ink);
   --accent-hover: var(--atelier-signature-hover);
 
-  /* Réponses aux rendez-vous : oui / peut-être / non (inchangées) */
-  --yes: #3f9a80;
+  /* Réponses aux rendez-vous : oui / peut-être / non (mêmes teintes ; encre assombrie en clair
+     pour un texte ≥ 4,5:1 sur sa pastille, posée sur la crème) */
+  --yes: #0b765d;
   --yes-soft: #d9f0e7;
-  --maybe: #c08a1e;
+  --maybe: #8d5a00;
   --maybe-soft: #f8ecd0;
-  --no: #b54a64;
+  --no: #a43b56;
   --no-soft: #f6dbe2;
 
   /* États : réussite d'un formulaire, erreur (seuls les états anormaux sont en couleur) */
@@ -83,7 +85,8 @@
 }
 
 /* Accents au choix du couple (Paramètres → Thème) : ils remplacent la signature,
-   et tout ce qui est en accent suit. */
+   et tout ce qui est en accent suit. Chacun garde un texte blanc ≥ 4,5:1 sur le bouton plein
+   (comme le rouge de Dates) et reste lisible en encre (--atelier-ink) sur crème et sur bleu nuit. */
 :root[data-accent] {
   --atelier-signature-contrast: #ffffff;
 }
@@ -91,15 +94,13 @@
   --atelier-signature: #7d68c0;
 }
 :root[data-accent="menthe"] {
-  --atelier-signature: #3b9479;
+  --atelier-signature: #258268;
 }
 :root[data-accent="ciel"] {
-  --atelier-signature: #4a7fc4;
+  --atelier-signature: #4176ba;
 }
 
 :root.dark {
-  --ink-2: #c8cad0;
-
   --yes: #7fd0b5;
   --yes-soft: #1f3b33;
   --maybe: #e8c46a;

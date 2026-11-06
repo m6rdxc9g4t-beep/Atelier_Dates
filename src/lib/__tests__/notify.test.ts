@@ -31,6 +31,12 @@ describe("e-mail", () => {
     expect(html).toContain("https://atelier-dates.vercel.app/rendez-vous");
   });
 
+  it("reprend la palette de l'app (crème, rouge de Dates)", () => {
+    const html = emailHtml({ title: "Coucou" });
+    expect(html).toContain("background:#f8f4ec");
+    expect(html).toContain("background:#db373a");
+  });
+
   it("ne produit que des liens vers l'app", () => {
     expect(absoluteUrl("//pirate.com")).toBe("https://atelier-dates.vercel.app//pirate.com");
     expect(absoluteUrl("https://pirate.com")).toBe("https://atelier-dates.vercel.app/accueil");

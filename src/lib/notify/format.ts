@@ -49,19 +49,20 @@ export function smsRecipient(phone: string) {
   return phone.replace(/[^\d]/g, "");
 }
 
-/** E-mail HTML sobre, aux couleurs de la charte (clair teinté de rouge ; styles en ligne pour les messageries) */
+/** E-mail HTML sobre, aux couleurs de l'app (fond crème du foyer, carte claire, bouton rouge de Dates ;
+ *  styles en ligne pour les messageries, qui ignorent les variables CSS) */
 export function emailHtml({ title, body, link }: { title: string; body?: string | null; link?: string | null }) {
   const url = absoluteUrl(link);
   return `<!doctype html>
 <html lang="fr">
-  <body style="margin:0;padding:24px;background:#faf1f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#361a1e;">
-    <div style="max-width:480px;margin:0 auto;background:#ffffff;border:1px solid #eba9a9;border-radius:24px;padding:28px;">
-      <p style="margin:0 0 6px;font-size:13px;color:#735761;">Notre Petit Monde</p>
-      <h1 style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:22px;line-height:1.3;font-weight:normal;">${escapeHtml(title)}</h1>
-      ${body ? `<p style="margin:0 0 20px;font-size:16px;line-height:1.5;">${escapeHtml(body)}</p>` : ""}
-      <a href="${escapeHtml(url)}" style="display:inline-block;background:#e03131;color:#ffffff;text-decoration:none;padding:12px 22px;border-radius:999px;font-size:15px;">Ouvrir Notre Petit Monde</a>
+  <body style="margin:0;padding:24px;background:#f8f4ec;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#1f1b16;">
+    <div style="max-width:480px;margin:0 auto;background:#fffdf8;border:1px solid #e4dac8;border-radius:10px;padding:28px;">
+      <p style="margin:0 0 8px;font-size:13px;font-weight:500;color:#665d51;">Notre Petit Monde</p>
+      <h1 style="margin:0 0 12px;font-size:20px;line-height:1.3;font-weight:600;letter-spacing:-0.01em;">${escapeHtml(title)}</h1>
+      ${body ? `<p style="margin:0 0 20px;font-size:15px;line-height:1.5;">${escapeHtml(body)}</p>` : ""}
+      <a href="${escapeHtml(url)}" style="display:inline-block;background:#db373a;color:#ffffff;text-decoration:none;padding:10px 18px;border-radius:7px;font-size:14px;font-weight:600;">Ouvrir Notre Petit Monde</a>
     </div>
-    <p style="max-width:480px;margin:16px auto 0;font-size:12px;color:#735761;text-align:center;">
+    <p style="max-width:480px;margin:16px auto 0;font-size:12px;color:#665d51;text-align:center;">
       Pour ne plus recevoir ces e-mails : Paramètres → Ton profil dans l'app.
     </p>
   </body>
