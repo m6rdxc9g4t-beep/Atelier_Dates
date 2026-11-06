@@ -13,8 +13,8 @@ export const THEME_MODES = [
 export const ACCENTS = [
   { value: "pivoine", label: "Rouge Atelier", swatch: "var(--atelier-sig-dates)" },
   { value: "lavande", label: "Lavande", swatch: "#7d68c0" },
-  { value: "menthe", label: "Menthe", swatch: "#3b9479" },
-  { value: "ciel", label: "Ciel", swatch: "#4a7fc4" },
+  { value: "menthe", label: "Menthe", swatch: "#258268" },
+  { value: "ciel", label: "Ciel", swatch: "#4176ba" },
 ] as const;
 
 export type ThemeMode = (typeof THEME_MODES)[number]["value"];

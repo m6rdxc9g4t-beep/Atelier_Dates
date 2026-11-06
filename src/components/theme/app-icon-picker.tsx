@@ -60,7 +60,7 @@ export function AppIconPicker() {
               )}
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- petite image statique, déjà à la bonne taille */}
-              <img src={APP_ICONS[key].preview} alt="" width={56} height={56} className="size-11 rounded-[22%] ring-1 ring-black/5" />
+              <img src={APP_ICONS[key].preview} alt="" width={56} height={56} className="size-11 rounded-[22%] ring-1 ring-edge" />
               <span className="flex-1 font-medium">{APP_ICONS[key].label}</span>
               {selected && <Check className="size-4 text-accent-strong" aria-hidden />}
             </button>
