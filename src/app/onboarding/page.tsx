@@ -3,20 +3,21 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AtelierBrand } from "@/components/atelier-brand";
 import { OnboardingForms } from "./onboarding-forms";
 
 export const metadata: Metadata = { title: "Bienvenue" };
 
 export default function OnboardingPage() {
   return (
-    <main className="grid min-h-dvh place-items-center px-5 py-12">
-      <div className="w-full max-w-md">
-        <p className="font-hand text-3xl text-accent-strong">premier pas</p>
-        <h1 className="neon-title mt-1 font-display text-4xl leading-tight text-ink">Créons votre petit monde</h1>
-        <p className="mt-3 mb-8 text-ink-soft">
+    <main className="grid min-h-dvh place-items-center px-5 pt-[max(3rem,env(safe-area-inset-top))] pb-12">
+      <div className="w-full max-w-sm">
+        <AtelierBrand />
+        <h1 className="mt-8 text-page font-semibold tracking-[-0.012em] text-ink">Créons votre petit monde</h1>
+        <p className="mt-1.5 mb-7 text-pretty text-muted">
           L&apos;un de vous crée l&apos;espace, l&apos;autre le rejoint avec le code d&apos;invitation.
         </p>
-        <Suspense fallback={<Skeleton className="h-80" />}>
+        <Suspense fallback={<Skeleton className="h-80 rounded-lg" />}>
           <OnboardingContent />
         </Suspense>
       </div>

@@ -6,7 +6,7 @@ import { APP_ICONS, APP_ICON_COOKIE } from "@/lib/app-icon";
 
 /**
  * Icône d'écran d'accueil choisie sur cet appareil (Paramètres → Icône de l'app) ;
- * sans choix : F ♥ A sur iPhone, cœur néon ailleurs (Mac, iPad…).
+ * sans choix : F ♥ A sur iPhone, icône Atelier ailleurs (Mac, iPad…).
  *
  * Safari lit l'icône dans la page au moment de « Sur l'écran d'accueil » / « Ajouter au Dock » :
  * d'abord <link rel="apple-touch-icon">, puis les icônes du manifeste. On réécrit donc ces deux

@@ -78,13 +78,13 @@ export function MemoryForm({ coupleId, albums, today }: { coupleId: string; albu
       <Field label="Lieu" name="location_name" errors={e?.location_name}>
         <div className="flex gap-2">
           <Input name="location_name" defaultValue={state.values?.location_name} placeholder="Montmartre, Paris" />
-          <Button variant="soft" onClick={locate} disabled={locating} aria-label="Utiliser ma position" title="Utiliser ma position">
+          <Button variant="soft" size="field" onClick={locate} disabled={locating} aria-label="Utiliser ma position" title="Utiliser ma position">
             <LocateFixed className="size-4" aria-hidden />
           </Button>
         </div>
       </Field>
       {coords && (
-        <p className="text-xs text-ink-soft sm:col-span-2">
+        <p className="text-small text-muted sm:col-span-2">
           Position enregistrée ({coords.lat}, {coords.lng}).
         </p>
       )}
@@ -106,15 +106,15 @@ export function MemoryForm({ coupleId, albums, today }: { coupleId: string; albu
       </Field>
 
       <Field label="Un petit mot doux" name="note" errors={e?.note} className="sm:col-span-2">
-        <Textarea name="note" defaultValue={state.values?.note} className="font-hand text-2xl leading-snug" placeholder="Tu avais renversé ton cappuccino…" />
+        <Textarea name="note" defaultValue={state.values?.note} className="leading-relaxed" placeholder="Tu avais renversé ton cappuccino…" />
       </Field>
 
       <div className="sm:col-span-2">
         <label
           htmlFor="photos"
-          className="flex cursor-pointer items-center gap-3 rounded-2xl border border-dashed border-edge-soft px-4 py-4 text-ink-soft transition-colors hover:border-accent hover:text-ink has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent"
+          className="flex cursor-pointer items-center gap-3 rounded-md border border-dashed border-edge-soft px-3 py-3.5 text-muted transition-colors hover:bg-sunken hover:text-ink has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent"
         >
-          <ImagePlus className="size-5 text-accent-strong" aria-hidden />
+          <ImagePlus className="size-4 text-faint" aria-hidden />
           {photoCount ? `${photoCount} photo${photoCount > 1 ? "s" : ""} sélectionnée${photoCount > 1 ? "s" : ""}` : "Ajouter des photos (10 Mo max chacune)"}
           <input
             id="photos"

@@ -5,7 +5,6 @@ import { Field, Input, Select } from "@/components/ui/field";
 import { FormMessage } from "@/components/ui/form-message";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { useFormAction } from "@/lib/use-form-action";
-import { cn } from "@/lib/utils";
 import { addExpense } from "../actions";
 
 type Split = "equal" | "for_partner" | "custom";
@@ -54,16 +53,10 @@ export function ExpenseForm({
       </Field>
 
       <fieldset className="sm:col-span-2">
-        <legend className="mb-1.5 text-sm font-medium text-ink">Partage</legend>
-        <div className="flex flex-wrap gap-2">
+        <legend className="mb-1.5 text-ui font-medium text-ink-2">Partage</legend>
+        <div className="seg flex-wrap">
           {options.map((o) => (
-            <label
-              key={o.value}
-              className={cn(
-                "cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent",
-                split === o.value ? "border-accent bg-accent-soft text-ink" : "border-edge-soft text-ink-soft hover:bg-accent-faint",
-              )}
-            >
+            <label key={o.value} className="seg-item min-h-9 px-3.5 lg:min-h-7">
               <input
                 type="radio"
                 name="split"

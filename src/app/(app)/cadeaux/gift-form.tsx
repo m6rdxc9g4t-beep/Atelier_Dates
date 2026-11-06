@@ -100,16 +100,13 @@ export function GiftForm({ coupleId, hasPartner = false, gift, currentPhoto, onD
 
       {!editing && hasPartner && (
         <fieldset className="sm:col-span-2">
-          <legend className="mb-1.5 text-sm font-medium text-ink">C&apos;est pour</legend>
-          <div className="flex flex-wrap gap-2">
+          <legend className="mb-1.5 text-ui font-medium text-ink-2">C&apos;est pour</legend>
+          <div className="seg">
             {[
               { value: "me", label: "Moi" },
               { value: "us", label: "Nous deux" },
             ].map((o) => (
-              <label
-                key={o.value}
-                className="cursor-pointer rounded-full border border-edge-soft px-4 py-1.5 text-sm text-ink-soft transition-colors hover:bg-accent-faint has-[:checked]:border-accent has-[:checked]:bg-accent-soft has-[:checked]:font-medium has-[:checked]:text-ink has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent"
-              >
+              <label key={o.value} className="seg-item min-h-9 px-3.5 lg:min-h-7">
                 <input type="radio" name="for_whom" value={o.value} defaultChecked={forWhom === o.value} className="sr-only" />
                 {o.label}
               </label>
@@ -136,20 +133,20 @@ export function GiftForm({ coupleId, hasPartner = false, gift, currentPhoto, onD
       </Field>
 
       <div className="sm:col-span-2">
-        <span className="mb-1.5 block text-sm font-medium text-ink">Photo de l&apos;objet</span>
+        <span className="mb-1.5 block text-ui font-medium text-ink-2">Photo de l&apos;objet</span>
         <div className="flex items-center gap-3">
           <label
             htmlFor={id("photo")}
             className={cn(
-              "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-2xl border border-dashed border-edge-soft px-4 py-4 text-ink-soft transition-colors hover:border-accent hover:text-ink has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent",
+              "flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-md border border-dashed border-edge-soft px-3 py-3.5 text-muted transition-colors hover:bg-sunken hover:text-ink has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent",
               shownPhoto && "py-2",
             )}
           >
             {shownPhoto ? (
               // eslint-disable-next-line @next/next/no-img-element -- aperçu local (blob:) ou URL signée
-              <img src={shownPhoto} alt="" className="size-14 shrink-0 rounded-xl object-cover" />
+              <img src={shownPhoto} alt="" className="size-12 shrink-0 rounded-md object-cover" />
             ) : (
-              <ImagePlus className="size-5 shrink-0 text-accent-strong" aria-hidden />
+              <ImagePlus className="size-4 shrink-0 text-faint" aria-hidden />
             )}
             {shownPhoto ? "Changer la photo" : "Ajouter une photo (facultatif)"}
             <input
@@ -168,14 +165,14 @@ export function GiftForm({ coupleId, hasPartner = false, gift, currentPhoto, onD
               onClick={clearPhoto}
               aria-label="Retirer la photo"
               title="Retirer la photo"
-              className="grid size-10 shrink-0 place-items-center rounded-full text-ink-soft hover:bg-accent-faint hover:text-ink"
+              className="grid size-9 shrink-0 place-items-center rounded-md text-muted transition-colors hover:bg-sunken hover:text-ink"
             >
               <X className="size-4" aria-hidden />
             </button>
           )}
         </div>
         {editing && removeCurrent && !preview && (
-          <p className="mt-1.5 text-xs text-ink-soft">
+          <p className="mt-1.5 text-small text-muted">
             La photo sera retirée à l&apos;enregistrement.{" "}
             <button type="button" onClick={() => setRemoveCurrent(false)} className="font-medium text-accent-strong underline-offset-2 hover:underline">
               La garder

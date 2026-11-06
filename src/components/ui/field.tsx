@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils";
 import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 
+/** Champ de la suite : 40 px sur téléphone, 36 px sur ordinateur, bord accent et voile de 3 px au focus */
 const control =
-  "w-full rounded-2xl border border-edge-soft bg-field px-4 py-2.5 text-ink placeholder:text-ink-soft/70 " +
-  "transition-colors focus:border-accent focus:outline-none focus-visible:outline-none focus:focus-glow " +
-  "aria-[invalid=true]:border-no";
+  "w-full rounded-md border border-edge-soft bg-field px-3 text-input text-ink placeholder:text-faint " +
+  "transition-[border-color,box-shadow] duration-150 hover:border-[color-mix(in_oklab,var(--edge-soft)_60%,var(--muted))] " +
+  "focus:border-accent focus:outline-none focus-visible:outline-none focus:focus-ring " +
+  "disabled:cursor-not-allowed disabled:opacity-60 aria-[invalid=true]:border-bad";
 
 type FieldProps = {
   label: string;
@@ -21,17 +23,17 @@ type FieldProps = {
 export function Field({ label, name, id = name, hint, errors, children, className }: FieldProps) {
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
-      <label htmlFor={id} className="text-sm font-medium text-ink">
+      <label htmlFor={id} className="text-ui font-medium text-ink-2">
         {label}
       </label>
       {children}
       {hint && !errors?.length && (
-        <p id={`${id}-hint`} className="text-xs text-ink-soft">
+        <p id={`${id}-hint`} className="text-small text-muted">
           {hint}
         </p>
       )}
       {errors?.length ? (
-        <p id={`${id}-error`} className="text-xs font-medium text-no" role="alert">
+        <p id={`${id}-error`} className="text-small font-medium text-bad" role="alert">
           {errors[0]}
         </p>
       ) : null}
@@ -52,7 +54,7 @@ export function Input({ className, invalid, name, ...props }: InputHTMLAttribute
       name={name}
       aria-invalid={invalid || undefined}
       aria-describedby={(props.id ?? name) ? describedBy((props.id ?? name)!, invalid) : undefined}
-      className={cn(control, "h-11", className)}
+      className={cn(control, "h-10 lg:h-9", className)}
       {...props}
     />
   );
@@ -70,7 +72,7 @@ export function Textarea({
       name={name}
       aria-invalid={invalid || undefined}
       aria-describedby={(props.id ?? name) ? describedBy((props.id ?? name)!, invalid) : undefined}
-      className={cn(control, "min-h-24 resize-y leading-relaxed", className)}
+      className={cn(control, "min-h-24 resize-y py-2 leading-relaxed", className)}
       {...props}
     />
   );
@@ -83,7 +85,7 @@ export function Select({ className, invalid, name, ...props }: SelectHTMLAttribu
       name={name}
       aria-invalid={invalid || undefined}
       aria-describedby={(props.id ?? name) ? describedBy((props.id ?? name)!, invalid) : undefined}
-      className={cn(control, "h-11 appearance-none bg-[length:1rem] pr-10", className)}
+      className={cn(control, "h-10 appearance-none bg-[url(/icons/chevron.svg)] bg-[length:16px] bg-[position:right_10px_center] bg-no-repeat pr-9 lg:h-9", className)}
       {...props}
     />
   );

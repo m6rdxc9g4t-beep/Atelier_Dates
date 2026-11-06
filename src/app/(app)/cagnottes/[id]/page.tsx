@@ -18,7 +18,7 @@ import { ExpenseForm } from "./expense-form";
 export default function PotPage({ params }: PageProps<"/cagnottes/[id]">) {
   return (
     <>
-      <Link href="/cagnottes" className="mb-6 inline-flex items-center gap-1.5 text-sm text-ink-soft hover:text-ink">
+      <Link href="/cagnottes" className="-ml-1 mb-4 inline-flex h-8 items-center gap-1.5 rounded-md px-1 text-muted transition-colors hover:text-ink">
         <ArrowLeft className="size-4" aria-hidden />
         Toutes les cagnottes
       </Link>
@@ -48,36 +48,38 @@ async function PotContent({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <>
-      <header className="mb-8">
-        <p className="text-3xl" aria-hidden>
-          {pot.emoji}
-        </p>
-        <h1 className="mt-2 font-display text-3xl text-ink sm:text-4xl">{pot.name}</h1>
-        {pot.description && <p className="mt-2 text-ink-soft">{pot.description}</p>}
+      <header className="mb-6">
+        <div className="flex items-center gap-3">
+          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-sunken text-xl leading-none" aria-hidden>
+            {pot.emoji}
+          </span>
+          <h1 className="text-page font-semibold tracking-[-0.012em] text-balance text-ink">{pot.name}</h1>
+        </div>
+        {pot.description && <p className="mt-2 text-muted">{pot.description}</p>}
       </header>
 
       <Panel className="mb-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-sm text-ink-soft">Dépensé</p>
-            <p className="text-3xl font-semibold tabular-nums text-ink">
+            <p className="text-small font-medium text-muted">Dépensé</p>
+            <p className="mt-0.5 text-display leading-tight font-semibold tracking-[-0.02em] tabular-nums text-ink">
               {money(balance.total)}
-              {pot.budget != null && <span className="ml-1 text-base font-normal text-ink-soft">sur {money(Number(pot.budget))}</span>}
+              {pot.budget != null && <span className="ml-1.5 text-ui font-normal tracking-normal text-muted">sur {money(Number(pot.budget))}</span>}
             </p>
           </div>
-          <dl className="flex gap-6 text-sm">
+          <dl className="flex gap-6">
             {members.map((m) => (
               <div key={m.id}>
-                <dt className="text-ink-soft">{m.id === userId ? "Tu as payé" : `${m.display_name} a payé`}</dt>
-                <dd className="font-semibold tabular-nums text-ink">{money(balance.paid[m.id] ?? 0)}</dd>
+                <dt className="text-small font-medium text-muted">{m.id === userId ? "Tu as payé" : `${m.display_name} a payé`}</dt>
+                <dd className="mt-0.5 text-strong font-semibold tabular-nums text-ink">{money(balance.paid[m.id] ?? 0)}</dd>
               </div>
             ))}
           </dl>
         </div>
 
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-sunken px-4 py-3">
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
           <p className="flex items-center gap-2 text-ink">
-            <HandCoins className="size-5 text-accent-strong" aria-hidden />
+            <HandCoins className="size-4 shrink-0 text-faint" aria-hidden strokeWidth={1.75} />
             <span className="font-medium">{debtSentence(balance.debt, userId, (id) => nameOf(members, id), money)}</span>
           </p>
           {balance.debt && (
@@ -106,12 +108,12 @@ async function PotContent({ params }: { params: Promise<{ id: string }> }) {
           Ajoutez la première : un billet de train, un dîner, une location…
         </EmptyState>
       ) : (
-        <ul className="neon-panel divide-y divide-line rounded-[1.75rem] border border-edge bg-surface">
+        <ul className="divide-y divide-line overflow-hidden rounded-lg border border-edge bg-surface">
           {expenses.map((e) => (
-            <li key={e.id} className="flex items-center gap-3 px-5 py-3.5">
+            <li key={e.id} className="flex min-h-14 items-center gap-3 py-2 pr-2 pl-4 lg:min-h-12">
               <div className="min-w-0 flex-1">
-                <p className={e.is_settlement ? "text-ink-soft italic" : "text-ink"}>{e.title}</p>
-                <p className="text-xs text-ink-soft">
+                <p className={e.is_settlement ? "text-muted italic" : "text-ink"}>{e.title}</p>
+                <p className="text-small text-muted tabular-nums">
                   {formatShortDate(e.spent_on)} — payé par {who(e.paid_by)}
                   {!e.is_settlement && Number(e.payer_share) !== 50 && `, partage ${Number(e.payer_share)} / ${100 - Number(e.payer_share)}`}
                 </p>
@@ -120,7 +122,7 @@ async function PotContent({ params }: { params: Promise<{ id: string }> }) {
               <ActionForm action={deleteExpense} confirmMessage="Supprimer cette dépense ?">
                 <input type="hidden" name="expense_id" value={e.id} />
                 <input type="hidden" name="pot_id" value={pot.id} />
-                <SubmitButton variant="ghost" size="sm" aria-label={`Supprimer ${e.title}`}>
+                <SubmitButton variant="ghost" size="icon" className="-my-1 -mr-1.5" aria-label={`Supprimer ${e.title}`}>
                   <Trash2 className="size-4" aria-hidden />
                 </SubmitButton>
               </ActionForm>

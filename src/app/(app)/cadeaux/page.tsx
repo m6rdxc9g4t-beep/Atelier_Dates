@@ -87,7 +87,7 @@ async function GiftsContent() {
                       ))}
                     </GiftGrid>
                   ) : (
-                    <p className="text-sm text-ink-soft">{s.empty}</p>
+                    <p className="text-muted">{s.empty}</p>
                   )}
                 </section>
               ),

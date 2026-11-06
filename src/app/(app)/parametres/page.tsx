@@ -19,18 +19,18 @@ export default function SettingsPage() {
   return (
     <>
       <PageHeader title="Paramètres" />
-      <div className="space-y-6">
+      <div className="space-y-4">
         <Suspense fallback={<ListSkeleton rows={2} />}>
           <SettingsContent />
         </Suspense>
         <Panel>
           <SectionTitle>Notifications</SectionTitle>
-          <p className="mb-4 text-sm text-ink-soft">
+          <p className="mb-4 text-pretty text-muted">
             Propositions, réponses, surprises et souvenirs : tu es prévenu·e dans l&apos;app, en push sur chaque appareil où tu
             l&apos;actives, et par e-mail ou SMS selon tes choix dans « Ton profil ».
           </p>
           <PushSettings />
-          <div className="mt-5 border-t border-line pt-5">
+          <div className="mt-4 border-t border-line pt-4">
             <TestNotification />
           </div>
         </Panel>
@@ -68,14 +68,14 @@ async function SettingsContent() {
       <Panel>
         <SectionTitle>Votre couple</SectionTitle>
         <CoupleForm couple={couple} />
-        <div className="mt-6 border-t border-line pt-5">
+        <div className="mt-5 border-t border-line pt-4">
           {partner ? (
-            <p className="text-sm text-ink-soft">
+            <p className="text-ui text-muted">
               {me.display_name} &amp; {partner.display_name} — votre espace est complet.
             </p>
           ) : (
             <>
-              <p className="mb-3 text-sm text-ink-soft">
+              <p className="mb-3 text-ui text-muted">
                 Envoie ce code à ton amour : à sa première connexion, il ou elle choisit « J&apos;ai un code ».
               </p>
               <InviteCode code={couple.invite_code} />

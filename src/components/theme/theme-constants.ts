@@ -1,8 +1,10 @@
-export const THEME_STORAGE_KEY = "npm-theme";
+/** Ancienne clé de préférence de thème propre à l'app (avant la préférence commune de la suite) : reprise une fois, puis effacée */
+export const LEGACY_THEME_KEY = "npm-theme";
 export const ACCENT_STORAGE_KEY = "npm-accent";
 
+/** Préférence commune de la suite Atelier (window.atelierTheme, src/styles/atelier-brand/atelier-theme.js) */
 export const THEME_MODES = [
-  { value: "system", label: "Comme l'appareil" },
+  { value: "system", label: "Système" },
   { value: "light", label: "Clair" },
   { value: "dark", label: "Sombre" },
 ] as const;
@@ -17,3 +19,9 @@ export const ACCENTS = [
 
 export type ThemeMode = (typeof THEME_MODES)[number]["value"];
 export type Accent = (typeof ACCENTS)[number]["value"];
+
+declare global {
+  interface Window {
+    atelierTheme?: { get(): ThemeMode; set(pref: ThemeMode): void; resolved(): "light" | "dark" };
+  }
+}

@@ -2,7 +2,8 @@ import { CircleAlert, CircleCheck } from "lucide-react";
 import type { ActionState } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 
-/** Message global d'un formulaire (succès ou erreur), annoncé aux lecteurs d'écran */
+/** Message global d'un formulaire (succès ou erreur), annoncé aux lecteurs d'écran.
+ *  Seule l'erreur est en couleur ; le succès reste neutre, avec sa coche. */
 export function FormMessage({ state, className }: { state: ActionState; className?: string }) {
   if (state.status === "idle" || !state.message) return null;
   const isError = state.status === "error";
@@ -11,12 +12,12 @@ export function FormMessage({ state, className }: { state: ActionState; classNam
     <p
       role={isError ? "alert" : "status"}
       className={cn(
-        "flex items-start gap-2 rounded-2xl px-4 py-3 text-sm",
-        isError ? "bg-no-soft text-no" : "bg-yes-soft text-yes",
+        "flex items-start gap-2 rounded-md border px-3 py-2.5 text-ui",
+        isError ? "border-bad-line bg-bad-soft text-bad" : "border-edge bg-surface text-ink",
         className,
       )}
     >
-      <Icon className="mt-0.5 size-4 shrink-0" aria-hidden />
+      <Icon className={cn("mt-px size-4 shrink-0", !isError && "text-good")} aria-hidden />
       <span>{state.message}</span>
     </p>
   );

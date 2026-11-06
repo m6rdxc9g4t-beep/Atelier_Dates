@@ -7,8 +7,8 @@
   "start_url": "/accueil",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#faf1f3",
-  "theme_color": "#faf1f3",
+  "background_color": "#fbfbfc",
+  "theme_color": "#fbfbfc",
   "icons": [
     {
       "src": "/icons/iphone-192.png",
