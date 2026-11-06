@@ -5,10 +5,11 @@
 
 /* ---------------------------------------------------------------------------
    Design tokens — charte Atelier v2 « Linear » (Atelier_Deploy/DESIGN.md)
-   Palette du foyer (Dates, Suivi, Cuisine) : crème en clair, bleu nuit en sombre, branchée sur les
-   jetons --atelier-* du kit (src/styles/atelier-brand/atelier-brand.css, §3 bis) ; la signature de Dates (rouge #db373a,
-   posée par data-atelier-app="dates" sur <html>) ne sert qu'à l'accent : bouton principal,
-   sélection, focus, liens, cœurs d'envie. La chaleur vient du contenu (photos, mots, dates).
+   Couleurs d'avant la v2 : toute l'app est teintée de sa signature (rouge #db373a, posée par
+   data-atelier-app="dates" sur <html>), en clair comme en sombre : fond, barre latérale, surfaces,
+   texte, gris et traits sont des mélanges de la signature calculés par le kit
+   (src/styles/atelier-brand/atelier-brand.css, §3 bis), plats (ni halo, ni grille, ni lueur).
+   La signature pleine ne sert qu'à l'accent : bouton principal, sélection, focus, liens, cœurs d'envie.
    Couleurs à part (elles portent un sens) : oui / peut-être / non des votes, réussite / erreur.
    --------------------------------------------------------------------------- */
 :root {
@@ -19,7 +20,7 @@
   --selected: var(--atelier-surface-3); /* élément courant (navigation, segment) */
   --field: var(--atelier-field);
   --ink: var(--atelier-text);
-  /* Libellés de navigation et de champ : entre le texte et le gris, dérivé de la palette (crème ou bleu nuit) */
+  /* Libellés de navigation et de champ : entre le texte et le gris, dérivé de la palette teintée */
   --ink-2: color-mix(in oklab, var(--atelier-text) 80%, var(--atelier-muted));
   --muted: var(--atelier-muted);
   --faint: var(--atelier-faint);
@@ -35,8 +36,8 @@
   --accent-strong: var(--atelier-ink);
   --accent-hover: var(--atelier-signature-hover);
 
-  /* Réponses aux rendez-vous : oui / peut-être / non (mêmes teintes ; encre assombrie en clair
-     pour un texte ≥ 4,5:1 sur sa pastille, posée sur la crème) */
+  /* Réponses aux rendez-vous : oui / peut-être / non (mêmes teintes qu'avant ; encre assombrie en clair
+     pour un texte ≥ 4,5:1 sur sa pastille comme sur une carte) */
   --yes: #0b765d;
   --yes-soft: #d9f0e7;
   --maybe: #8d5a00;
@@ -44,12 +45,14 @@
   --no: #a43b56;
   --no-soft: #f6dbe2;
 
-  /* États : réussite d'un formulaire, erreur (seuls les états anormaux sont en couleur) */
+  /* États : réussite d'un formulaire (coche seulement), erreur (seuls les états anormaux sont en couleur).
+     L'erreur reprend la framboise du « non », comme avant : le rouge d'erreur du kit (--atelier-down)
+     se confondrait avec le rouge de Dates. */
   --good: var(--atelier-up);
   --good-soft: color-mix(in oklab, var(--atelier-up) 10%, transparent);
-  --bad: var(--atelier-down);
-  --bad-soft: color-mix(in oklab, var(--atelier-down) 9%, transparent);
-  --bad-line: color-mix(in oklab, var(--atelier-down) 30%, transparent);
+  --bad: var(--no);
+  --bad-soft: color-mix(in oklab, var(--no) 9%, transparent);
+  --bad-line: color-mix(in oklab, var(--no) 30%, transparent);
 
   /* Échelle typographique : 15 px de base sur téléphone, 13 px sur ordinateur (voir plus bas) */
   --fs-meta: 12.5px;
@@ -84,9 +87,9 @@
   }
 }
 
-/* Accents au choix du couple (Paramètres → Thème) : ils remplacent la signature,
-   et tout ce qui est en accent suit. Chacun garde un texte blanc ≥ 4,5:1 sur le bouton plein
-   (comme le rouge de Dates) et reste lisible en encre (--atelier-ink) sur crème et sur bleu nuit. */
+/* Accents au choix du couple (Paramètres → Thème) : ils remplacent la signature, donc teintent
+   toute l'app (fonds, surfaces, texte, traits : §3 bis du kit), comme avant. Chacun garde un texte
+   blanc ≥ 4,5:1 sur le bouton plein (comme le rouge de Dates). */
 :root[data-accent] {
   --atelier-signature-contrast: #ffffff;
 }
@@ -109,7 +112,11 @@
   --no-soft: #47242f;
 
   --good-soft: color-mix(in oklab, var(--atelier-up) 14%, transparent);
-  --bad-soft: color-mix(in oklab, var(--atelier-down) 13%, transparent);
+  --bad-soft: color-mix(in oklab, var(--no) 13%, transparent);
+
+  /* Accent en texte un peu plus clair que l'encre du kit (82 %) : ≥ 4,5:1 sur la pastille
+     d'accent (bg-accent-soft) pour le rouge comme pour Lavande, Menthe et Ciel. */
+  --accent-strong: color-mix(in oklab, var(--atelier-signature) 78%, #ffffff);
 
   color-scheme: dark;
 }

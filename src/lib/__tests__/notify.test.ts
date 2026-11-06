@@ -31,9 +31,9 @@ describe("e-mail", () => {
     expect(html).toContain("https://atelier-dates.vercel.app/rendez-vous");
   });
 
-  it("reprend la palette de l'app (crème, rouge de Dates)", () => {
+  it("reprend la palette de l'app (fond teinté de rouge, rouge de Dates)", () => {
     const html = emailHtml({ title: "Coucou" });
-    expect(html).toContain("background:#f8f4ec");
+    expect(html).toContain("background:#fbf2f3");
     expect(html).toContain("background:#db373a");
   });
 

@@ -11,8 +11,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/accueil",
     scope: "/",
     display: "standalone",
-    background_color: "#f8f4ec",
-    theme_color: "#f8f4ec",
+    background_color: "#fbf2f3",
+    theme_color: "#fbf2f3",
     icons: [
       // icône Atelier (cœur blanc sur carré rouge) ; la variante F ♥ A est dans public/icons/manifest-iphone.webmanifest (voir src/lib/app-icon.ts)
       { src: "/icons/neon-192.png", sizes: "192x192", type: "image/png" },

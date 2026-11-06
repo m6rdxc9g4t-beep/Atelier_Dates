@@ -6,7 +6,7 @@ Application web intime pour deux : rendez-vous à valider ensemble, cagnottes fa
 
 **Icône de l'app**, au choix sur chaque appareil (*Paramètres → Icône de l'app*) : **F ♥ A** ou **icône Atelier** (charte v2 de la suite : cœur blanc sur carré arrondi rouge). Sans choix : F ♥ A sur iPhone, icône Atelier ailleurs. Le choix est gardé dans le cookie `app_icon` (lu par `src/proxy.ts` et `src/components/theme/app-icons.tsx`, logique dans `src/lib/app-icon.ts`). Une icône déjà posée ne change pas d'elle-même : choisir dans Safari, supprimer l'ancienne icône puis rajouter l'app. Source de l'icône Atelier : `public/brand/icone-atelier-dates.svg` ; PNG régénérés par `node scripts/icones.mjs`.
 
-**Apparence :** charte v2 « Linear » de la suite Atelier, palette du foyer (comme Atelier Suivi et Atelier Cuisine) : fond crème en clair, bleu nuit en sombre ; le rouge de Dates `#db373a` (ou l'accent Lavande / Menthe / Ciel choisi dans *Paramètres → Thème*) ne sert qu'à l'accent.
+**Apparence :** charte v2 « Linear » de la suite Atelier avec les couleurs d'avant (comme Atelier Suivi et Atelier Cuisine) : toute l'app est teintée du rouge de Dates `#db373a`, en clair comme en sombre (fond, surfaces, texte, traits) ; le rouge plein sert à l'accent (bouton principal, sélection, liens). L'accent Lavande / Menthe / Ciel choisi dans *Paramètres → Thème* remplace le rouge partout, teinte comprise.
 
 **Stack :** Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · Tailwind CSS 4 · Supabase (Postgres, Auth, Storage, RLS) · Zod · Lucide · Vercel.
 
