@@ -54,7 +54,7 @@ async function SurprisesContent() {
           <SurpriseForm partnerName={partner.display_name} />
         </Disclosure>
       ) : (
-        <p className="rounded-2xl bg-sunken px-4 py-3 text-sm text-ink-soft">
+        <p className="rounded-md border border-edge bg-surface px-3 py-2.5 text-muted">
           Les surprises s&apos;activent dès que ton amour a rejoint votre espace.
         </p>
       )}
@@ -101,27 +101,27 @@ function ReceivedSurprise({
 }) {
   const revealed = new Date(surprise.reveal_at).getTime() <= now && secret;
   return (
-    <li className="neon-panel rounded-[1.75rem] border border-edge bg-surface p-5">
+    <li className="rounded-lg border border-edge bg-surface p-4">
       {revealed ? (
         <>
-          <p className="text-sm text-ink-soft">{surprise.teaser}</p>
-          <h3 className="mt-2 font-display text-2xl text-ink">{secret.title}</h3>
-          {secret.message && <p className="mt-2 font-hand text-2xl leading-snug whitespace-pre-line text-accent-strong">{secret.message}</p>}
+          <p className="text-muted">{surprise.teaser}</p>
+          <h3 className="mt-2 text-title font-semibold text-ink">{secret.title}</h3>
+          {secret.message && <p className="mt-2 whitespace-pre-line text-strong leading-relaxed text-pretty text-ink-2">{secret.message}</p>}
         </>
       ) : (
         <>
-          <div className="flex items-center gap-2 text-sm font-medium text-accent-strong">
-            <Lock className="size-4" aria-hidden />
+          <div className="flex items-center gap-2 font-medium text-ink-2 tabular-nums">
+            <Lock className="size-3.5 text-faint" aria-hidden />
             Révélation <Countdown to={surprise.reveal_at} />
           </div>
-          <p className="mt-2 font-display text-xl text-ink">{surprise.teaser}</p>
+          <p className="mt-1.5 text-title font-semibold text-pretty text-ink">{surprise.teaser}</p>
         </>
       )}
       {hints.length > 0 && (
-        <ol className="mt-4 space-y-2 border-t border-line pt-4">
+        <ol className="mt-4 space-y-1.5 border-t border-line pt-3">
           {hints.map((h, i) => (
-            <li key={h.id} className="text-sm text-ink">
-              <span className="text-ink-soft">Indice {i + 1} :</span> {h.content}
+            <li key={h.id} className="text-ink">
+              <span className="text-muted">Indice {i + 1} :</span> {h.content}
             </li>
           ))}
         </ol>
@@ -143,19 +143,19 @@ function PreparedSurprise({
 }) {
   const revealed = new Date(surprise.reveal_at).getTime() <= now;
   return (
-    <li className="neon-panel rounded-[1.75rem] border border-edge bg-surface p-5">
+    <li className="rounded-lg border border-edge bg-surface p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm text-ink-soft">
+          <p className="text-small text-muted tabular-nums">
             {revealed ? "Révélée le " : "Révélation le "}
             {formatDateTime(surprise.reveal_at)}
           </p>
-          <h3 className="mt-1 font-display text-lg text-ink">{secret?.title ?? "Surprise"}</h3>
-          <p className="mt-1 text-sm text-ink-soft">Teaser visible : « {surprise.teaser} »</p>
+          <h3 className="mt-1 text-strong font-semibold text-ink">{secret?.title ?? "Surprise"}</h3>
+          <p className="mt-1 text-muted">Teaser visible : « {surprise.teaser} »</p>
         </div>
         <ActionForm action={deleteSurprise} confirmMessage="Annuler cette surprise ?">
           <input type="hidden" name="surprise_id" value={surprise.id} />
-          <SubmitButton variant="ghost" size="sm" aria-label="Annuler la surprise">
+          <SubmitButton variant="ghost" size="icon" className="-my-1 -mr-1.5" aria-label="Annuler la surprise">
             <Trash2 className="size-4" aria-hidden />
           </SubmitButton>
         </ActionForm>
@@ -166,16 +166,16 @@ function PreparedSurprise({
           {hints.map((h) => {
             const visible = new Date(h.reveal_at).getTime() <= now;
             return (
-              <li key={h.id} className="flex items-center justify-between gap-3 text-sm">
+              <li key={h.id} className="flex items-center justify-between gap-3">
                 <span className="text-ink">
                   {h.content}
-                  <span className="ml-2 text-xs text-ink-soft">
+                  <span className="ml-2 text-small text-muted tabular-nums">
                     {visible ? "déjà visible" : `visible le ${formatDateTime(h.reveal_at)}`}
                   </span>
                 </span>
                 <ActionForm action={deleteHint}>
                   <input type="hidden" name="hint_id" value={h.id} />
-                  <SubmitButton variant="ghost" size="sm" aria-label="Supprimer l'indice">
+                  <SubmitButton variant="ghost" size="icon" className="-my-1 -mr-1.5" aria-label="Supprimer l'indice">
                     <Trash2 className="size-3.5" aria-hidden />
                   </SubmitButton>
                 </ActionForm>
@@ -186,7 +186,7 @@ function PreparedSurprise({
       )}
 
       {!revealed && (
-        <div className="mt-4 border-t border-line pt-4">
+        <div className="mt-4 border-t border-line pt-3">
           <HintForm surpriseId={surprise.id} />
         </div>
       )}

@@ -90,7 +90,7 @@ async function MemoriesContent({ searchParams }: { searchParams: Promise<Record<
       </Disclosure>
 
       <form
-        className="mb-8 grid grid-cols-2 items-end gap-3 rounded-[1.75rem] border border-edge-soft bg-accent-faint p-4 sm:grid-cols-[minmax(0,1fr)_9.5rem_9.5rem] lg:grid-cols-[minmax(0,1fr)_9.5rem_9.5rem_11rem_auto]"
+        className="mb-8 grid grid-cols-2 items-end gap-3 rounded-lg border border-edge bg-surface p-3 sm:grid-cols-[minmax(0,1fr)_9.5rem_9.5rem] lg:grid-cols-[minmax(0,1fr)_8.5rem_8.5rem_8.5rem_auto]"
         role="search"
         aria-label="Filtrer les souvenirs"
       >
@@ -113,7 +113,7 @@ async function MemoriesContent({ searchParams }: { searchParams: Promise<Record<
             ))}
           </Select>
         </FilterField>
-        <button type="submit" className={buttonClasses("soft", "md")}>
+        <button type="submit" className={buttonClasses("soft", "row")}>
           Filtrer
         </button>
       </form>
@@ -125,13 +125,13 @@ async function MemoriesContent({ searchParams }: { searchParams: Promise<Record<
             : "Ajoutez une photo de votre dernière sortie et un petit mot pour vous en souvenir."}
         </EmptyState>
       ) : (
-        <div className="space-y-12">
+        <div className="space-y-10">
           {months.map(([month, items]) => (
             <section key={month}>
-              <h2 className="sticky top-0 z-10 -mx-2 mb-4 bg-paper/90 px-2 py-2 font-display text-xl capitalize text-ink backdrop-blur">
+              <h2 className="sticky top-[calc(var(--top-h)+env(safe-area-inset-top))] z-10 -mx-2 mb-3 bg-paper/85 px-2 py-2 text-strong font-semibold capitalize text-ink backdrop-blur-md">
                 {month}
               </h2>
-              <ol className="space-y-6 border-l-2 border-accent-soft pl-5">
+              <ol className="ml-1 space-y-4 border-l border-line pl-5">
                 {items.map((m) => (
                   <MemoryItem key={m.id} memory={m} photos={photosBy.get(m.id) ?? []} album={m.album_id ? albumName.get(m.album_id) : undefined} />
                 ))}
@@ -152,12 +152,12 @@ function MemoryItem({ memory, photos, album }: { memory: MemoryRow; photos: stri
 
   return (
     <li className="relative">
-      <span className="absolute top-2 -left-[1.6rem] size-3 rounded-full border-2 border-paper bg-accent" aria-hidden />
-      <article className="neon-panel rounded-[1.75rem] border border-edge bg-surface p-5">
+      <span className="absolute top-5 -left-[1.5625rem] size-2 rounded-full bg-edge-soft ring-4 ring-paper" aria-hidden />
+      <article className="rounded-lg border border-edge bg-surface p-4">
         {photos.length > 0 && (
           <div className={photos.length === 1 ? "mb-4" : "mb-4 grid grid-cols-2 gap-2 sm:grid-cols-3"}>
             {photos.map((url, i) => (
-              <a key={url} href={url} target="_blank" rel="noreferrer" className="block overflow-hidden rounded-2xl bg-sunken">
+              <a key={url} href={url} target="_blank" rel="noreferrer" className="block overflow-hidden rounded-md bg-sunken outline-offset-2">
                 <Image
                   src={url}
                   alt={`${memory.title}, photo ${i + 1}`}
@@ -172,12 +172,12 @@ function MemoryItem({ memory, photos, album }: { memory: MemoryRow; photos: stri
         )}
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className="font-display text-lg text-ink">{memory.title}</h3>
-            <p className="mt-0.5 flex flex-wrap items-center gap-x-3 text-sm text-ink-soft">
+            <h3 className="text-strong font-semibold text-ink">{memory.title}</h3>
+            <p className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-muted">
               <time dateTime={memory.happened_on}>{formatLongDate(memory.happened_on)}</time>
               {memory.location_name &&
                 (mapUrl ? (
-                  <a href={mapUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline-offset-2 hover:underline">
+                  <a href={mapUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-ink hover:underline">
                     <MapPin className="size-3.5" aria-hidden />
                     {memory.location_name}
                   </a>
@@ -187,17 +187,17 @@ function MemoryItem({ memory, photos, album }: { memory: MemoryRow; photos: stri
                     {memory.location_name}
                   </span>
                 ))}
-              {album && <span className="rounded-full border border-edge-soft bg-accent-soft px-2.5 py-0.5 text-xs text-accent-strong">{album}</span>}
+              {album && <span className="rounded-sm bg-sunken px-1.5 py-1 text-small leading-none font-medium text-ink-2">{album}</span>}
             </p>
           </div>
           <ActionForm action={deleteMemory} confirmMessage="Supprimer ce souvenir et ses photos ?">
             <input type="hidden" name="memory_id" value={memory.id} />
-            <SubmitButton variant="ghost" size="sm" aria-label={`Supprimer ${memory.title}`}>
+            <SubmitButton variant="ghost" size="icon" className="-my-1 -mr-1.5" aria-label={`Supprimer ${memory.title}`}>
               <Trash2 className="size-4" aria-hidden />
             </SubmitButton>
           </ActionForm>
         </div>
-        {memory.note && <p className="mt-3 font-hand text-2xl leading-snug whitespace-pre-line text-accent-strong">{memory.note}</p>}
+        {memory.note && <p className="mt-3 whitespace-pre-line text-strong leading-relaxed text-pretty text-ink-2">{memory.note}</p>}
       </article>
     </li>
   );
@@ -206,7 +206,7 @@ function MemoryItem({ memory, photos, album }: { memory: MemoryRow; photos: stri
 function FilterField({ label, className, children }: { label: string; className?: string; children: React.ReactNode }) {
   return (
     <div className={className}>
-      <span className="mb-1 block px-1 text-xs text-ink-soft" aria-hidden>
+      <span className="mb-1.5 block text-small font-medium text-muted" aria-hidden>
         {label}
       </span>
       {children}

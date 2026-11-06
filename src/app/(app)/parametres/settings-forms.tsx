@@ -22,7 +22,7 @@ export function ProfileForm({ profile }: { profile: ProfileRow }) {
         <Input name="phone" type="tel" defaultValue={state.values?.phone ?? profile.phone ?? ""} autoComplete="tel" invalid={!!e?.phone} />
       </Field>
       <fieldset className="space-y-2 sm:col-span-2">
-        <legend className="mb-1 text-sm font-medium text-ink">Me prévenir quand ton amour propose, répond ou prépare une surprise</legend>
+        <legend className="mb-1 text-pretty text-ui font-medium text-ink-2">Me prévenir quand ton amour propose, répond ou prépare une surprise</legend>
         <Toggle name="notify_email" label="Par e-mail" defaultChecked={profile.notify_email} />
         <Toggle name="notify_sms" label="Par SMS (rendez-vous et surprises seulement)" defaultChecked={profile.notify_sms} />
       </fieldset>
@@ -38,11 +38,11 @@ export function ProfileForm({ profile }: { profile: ProfileRow }) {
 
 function Toggle({ name, label, defaultChecked }: { name: string; label: string; defaultChecked: boolean }) {
   return (
-    <label className="flex cursor-pointer items-center gap-3 text-ink">
+    <label className="flex min-h-9 cursor-pointer items-center gap-3 text-ink lg:min-h-7">
       <input type="checkbox" name={name} defaultChecked={defaultChecked} className="peer sr-only" />
       <span
         aria-hidden
-        className="relative h-6 w-11 rounded-full bg-edge-soft transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-surface after:transition-transform peer-checked:after:translate-x-5"
+        className="relative h-5 w-9 shrink-0 rounded-full bg-edge-soft transition-colors duration-150 peer-checked:bg-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent after:absolute after:top-0.5 after:left-0.5 after:size-4 after:rounded-full after:bg-white after:shadow-[0_1px_2px_rgb(0_0_0/0.2)] after:transition-transform after:duration-150 peer-checked:after:translate-x-4"
       />
       {label}
     </label>
@@ -74,7 +74,7 @@ export function InviteCode({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <code className="rounded-2xl bg-sunken px-4 py-2 font-display text-2xl tracking-[0.25em] text-ink">{code}</code>
+      <code className="rounded-md border border-edge bg-sunken px-3 py-1.5 font-mono text-title font-semibold tracking-[0.18em] text-ink">{code}</code>
       <Button
         variant="soft"
         size="sm"

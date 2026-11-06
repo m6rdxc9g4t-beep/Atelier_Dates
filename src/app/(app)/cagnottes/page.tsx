@@ -57,28 +57,28 @@ async function PotsContent() {
           <li key={pot.id}>
             <Link
               href={`/cagnottes/${pot.id}`}
-              className="block h-full neon-panel rounded-[1.75rem] border border-edge bg-surface p-5 transition-colors hover:border-accent hover:neon-panel-strong"
+              className="block h-full rounded-lg border border-edge bg-surface p-4 transition-colors hover:border-edge-soft hover:bg-sunken/40"
             >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl" aria-hidden>
+              <div className="flex items-center gap-2.5">
+                <span className="grid size-8 shrink-0 place-items-center rounded-md bg-sunken text-lg leading-none" aria-hidden>
                   {pot.emoji}
                 </span>
-                <h2 className="font-display text-lg text-ink">{pot.name}</h2>
+                <h2 className="text-strong font-semibold text-ink">{pot.name}</h2>
               </div>
-              <p className="mt-3 text-2xl font-semibold tabular-nums text-ink">
+              <p className="mt-3 text-page font-semibold tracking-[-0.012em] tabular-nums text-ink">
                 {formatMoney(balance.total, pot.currency)}
                 {pot.budget != null && (
-                  <span className="ml-1 text-sm font-normal text-ink-soft">
+                  <span className="ml-1 text-ui font-normal tracking-normal text-muted">
                     / {formatMoney(Number(pot.budget), pot.currency)}
                   </span>
                 )}
               </p>
               {progress !== null && (
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-accent-soft" aria-hidden>
-                  <div className="glow-accent h-full rounded-full bg-accent" style={{ width: `${progress}%` }} />
+                <div className="mt-2 h-1 overflow-hidden rounded-full bg-sunken" aria-hidden>
+                  <div className="h-full rounded-full bg-accent" style={{ width: `${progress}%` }} />
                 </div>
               )}
-              <p className="mt-3 text-sm text-ink-soft">
+              <p className="mt-3 text-muted">
                 {debtSentence(balance.debt, userId, (id) => nameOf(members, id), (n) => formatMoney(n, pot.currency))}
               </p>
             </Link>

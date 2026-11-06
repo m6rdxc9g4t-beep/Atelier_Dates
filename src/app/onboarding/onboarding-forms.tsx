@@ -5,7 +5,6 @@ import { Field, Input } from "@/components/ui/field";
 import { FormMessage } from "@/components/ui/form-message";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { useFormAction } from "@/lib/use-form-action";
-import { cn } from "@/lib/utils";
 import { createCouple, joinCouple } from "./actions";
 
 export function OnboardingForms({ defaultName }: { defaultName: string }) {
@@ -15,7 +14,7 @@ export function OnboardingForms({ defaultName }: { defaultName: string }) {
 
   return (
     <div>
-      <div role="tablist" aria-label="Choix" className="mb-6 grid grid-cols-2 rounded-full border border-edge-soft bg-accent-faint p-1">
+      <div role="tablist" aria-label="Choix" className="seg mb-6 grid w-full grid-cols-2">
         {(
           [
             ["create", "Je crée notre espace"],
@@ -28,10 +27,7 @@ export function OnboardingForms({ defaultName }: { defaultName: string }) {
             role="tab"
             aria-selected={mode === value}
             onClick={() => setMode(value)}
-            className={cn(
-              "rounded-full py-2 text-sm font-medium transition-colors",
-              mode === value ? "bg-selected text-ink" : "text-ink-soft hover:text-ink",
-            )}
+            className="seg-item min-h-9 lg:min-h-8"
           >
             {label}
           </button>
@@ -60,7 +56,7 @@ export function OnboardingForms({ defaultName }: { defaultName: string }) {
             <Input name="started_on" defaultValue={createState.values?.started_on} type="date" />
           </Field>
           <FormMessage state={createState} />
-          <SubmitButton pendingLabel="Création…">Créer notre espace</SubmitButton>
+          <SubmitButton pendingLabel="Création…" className="lg:h-[38px] lg:text-strong">Créer notre espace</SubmitButton>
         </form>
       ) : (
         <form action={joinAction} className="flex flex-col gap-4" noValidate>
@@ -76,7 +72,7 @@ export function OnboardingForms({ defaultName }: { defaultName: string }) {
             <Input name="code" defaultValue={joinState.values?.code} className="font-medium tracking-[0.3em] uppercase" maxLength={8} autoComplete="off" required />
           </Field>
           <FormMessage state={joinState} />
-          <SubmitButton pendingLabel="Connexion…">Rejoindre notre espace</SubmitButton>
+          <SubmitButton pendingLabel="Connexion…" className="lg:h-[38px] lg:text-strong">Rejoindre notre espace</SubmitButton>
         </form>
       )}
     </div>

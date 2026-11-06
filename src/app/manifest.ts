@@ -11,10 +11,10 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/accueil",
     scope: "/",
     display: "standalone",
-    background_color: "#faf1f3",
-    theme_color: "#faf1f3",
+    background_color: "#fbfbfc",
+    theme_color: "#fbfbfc",
     icons: [
-      // cœur néon ; la variante F ♥ A est dans public/icons/manifest-iphone.webmanifest (voir src/lib/app-icon.ts)
+      // icône Atelier (cœur blanc sur carré rouge) ; la variante F ♥ A est dans public/icons/manifest-iphone.webmanifest (voir src/lib/app-icon.ts)
       { src: "/icons/neon-192.png", sizes: "192x192", type: "image/png" },
       { src: "/icons/neon-512.png", sizes: "512x512", type: "image/png" },
       { src: "/icons/neon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },

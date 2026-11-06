@@ -14,13 +14,13 @@ export function GiftEditor({ gift, coupleId, currentPhoto }: { gift: GiftRow; co
   if (!open) {
     return (
       <Button size="sm" variant="ghost" onClick={() => setOpen(true)} aria-label={`Modifier ${gift.title}`}>
-        <Pencil className="size-4" aria-hidden />
+        <Pencil className="size-3.5" aria-hidden />
         Modifier
       </Button>
     );
   }
   return (
-    <div className="mt-2 basis-full rounded-[1.25rem] border border-edge-soft bg-accent-faint p-4">
+    <div className="mt-2 basis-full rounded-lg border border-edge bg-paper p-4">
       <GiftForm coupleId={coupleId} gift={gift} currentPhoto={currentPhoto} onDone={close} onCancel={close} />
     </div>
   );

@@ -1,7 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource/young-serif/400.css";
-import "@fontsource-variable/figtree";
-import "@fontsource/caveat/500.css";
 import "@/styles/atelier-brand/atelier-brand.css";
 import "./globals.css";
 import { Suspense } from "react";
@@ -17,14 +14,14 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false },
   // Icône d'écran d'accueil : une seule adresse, servie par le proxy selon le choix fait sur l'appareil
   // (src/lib/app-icon.ts) ; le script AppIconsScript la remplace dans la page par l'adresse propre à l'icône.
-  icons: { apple: [{ url: "/apple-touch-icon.png?v=3", sizes: "180x180", type: "image/png" }] },
+  icons: { apple: [{ url: "/apple-touch-icon.png?v=4", sizes: "180x180", type: "image/png" }] },
 };
 
 export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf1f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#140a0c" },
+    { media: "(prefers-color-scheme: light)", color: "#fbfbfc" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f1012" },
   ],
 };
 

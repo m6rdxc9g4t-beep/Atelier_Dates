@@ -12,7 +12,7 @@ import { GiftEditor } from "./gift-editor";
 export type Who = "mine" | "theirs" | "ours";
 
 export function GiftGrid({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <ul className={cn("grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-3", className)}>{children}</ul>;
+  return <ul className={cn("grid items-start gap-3 sm:grid-cols-2", className)}>{children}</ul>;
 }
 
 function siteName(url: string) {
@@ -39,48 +39,48 @@ export function GiftCard({
   const isReceived = !!gift.received_at;
 
   return (
-    <li className={cn("neon-panel overflow-hidden rounded-[1.75rem] border border-edge bg-surface", claimed && "neon-panel-strong")}>
+    <li className={cn("overflow-hidden rounded-lg border bg-surface", claimed ? "border-[color-mix(in_oklab,var(--accent)_35%,transparent)]" : "border-edge")}>
       {photo && (
-        <a href={photo} target="_blank" rel="noreferrer" className="block bg-sunken">
+        <a href={photo} target="_blank" rel="noreferrer" className="block border-b border-line bg-sunken">
           <Image src={photo} alt={gift.title} width={600} height={450} unoptimized className="aspect-[4/3] w-full object-cover" />
         </a>
       )}
-      <div className="p-5">
+      <div className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 items-start gap-3">
             {!photo && (
-              <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent-strong">
-                <ShoppingBag className="size-5" aria-hidden />
+              <span className="grid size-9 shrink-0 place-items-center rounded-md bg-sunken text-faint">
+                <ShoppingBag className="size-4" aria-hidden strokeWidth={1.75} />
               </span>
             )}
             <div className="min-w-0">
-              <h3 className="font-display text-lg leading-snug text-ink">{gift.title}</h3>
-              {gift.price != null && <p className="text-sm text-ink-soft">{formatMoney(Number(gift.price))}</p>}
+              <h3 className="text-strong font-semibold leading-snug text-ink">{gift.title}</h3>
+              {gift.price != null && <p className="text-muted tabular-nums">{formatMoney(Number(gift.price))}</p>}
             </div>
           </div>
           <ActionForm action={deleteGift} confirmMessage="Retirer cet objet de la liste ?">
             <input type="hidden" name="gift_id" value={gift.id} />
-            <SubmitButton variant="ghost" size="sm" aria-label={`Supprimer ${gift.title}`}>
+            <SubmitButton variant="ghost" size="icon" className="-my-1 -mr-1.5" aria-label={`Supprimer ${gift.title}`}>
               <Trash2 className="size-4" aria-hidden />
             </SubmitButton>
           </ActionForm>
         </div>
 
-        {gift.note && <p className="mt-2 whitespace-pre-line text-[0.95rem] leading-relaxed text-ink">{gift.note}</p>}
+        {gift.note && <p className="mt-2 whitespace-pre-line text-pretty text-ink-2">{gift.note}</p>}
 
         {gift.url && (
           <a
             href={gift.url}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            className="mt-3 inline-flex max-w-full items-center gap-1.5 text-sm font-medium text-accent-strong underline-offset-2 hover:underline"
+            className="mt-3 inline-flex max-w-full items-center gap-1.5 font-medium text-accent-strong hover:underline"
           >
             <ExternalLink className="size-3.5 shrink-0" aria-hidden />
             <span className="truncate">Voir sur {siteName(gift.url)}</span>
           </a>
         )}
 
-        <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-line pt-4">
+        <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-line pt-3">
           {who === "theirs" && !isReceived && (
             <ActionForm action={toggleClaim}>
               <input type="hidden" name="gift_id" value={gift.id} />
@@ -105,7 +105,7 @@ export function GiftCard({
           {/* On modifie ses propres envies et celles du couple ; la liste de l'autre lui appartient */}
           {who !== "theirs" && <GiftEditor gift={gift} coupleId={coupleId} currentPhoto={photo} />}
         </div>
-        {claimed && !isReceived && <p className="mt-2 text-xs text-ink-soft">Chut, l&apos;autre ne voit pas que tu t&apos;en occupes.</p>}
+        {claimed && !isReceived && <p className="mt-2 text-small text-muted">Chut, l&apos;autre ne voit pas que tu t&apos;en occupes.</p>}
       </div>
     </li>
   );

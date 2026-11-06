@@ -28,7 +28,7 @@ export function SurpriseForm({ partnerName }: { partnerName: string }) {
         <Input name="title" defaultValue={state.values?.title} placeholder="Une journée au spa" required invalid={!!e?.title} />
       </Field>
       <Field label="Ton message de révélation" name="message" errors={e?.message} className="sm:col-span-2">
-        <Textarea name="message" defaultValue={state.values?.message} className="font-hand text-2xl leading-snug" placeholder="Rendez-vous à 10 h devant la gare…" />
+        <Textarea name="message" defaultValue={state.values?.message} className="leading-relaxed" placeholder="Rendez-vous à 10 h devant la gare…" />
       </Field>
       <div className="flex flex-col gap-3 sm:col-span-2">
         <FormMessage state={state} />
@@ -52,7 +52,7 @@ export function HintForm({ surpriseId }: { surpriseId: string }) {
       <Field label="Visible à partir du" name="reveal_at" errors={e?.reveal_at}>
         <DateTimeField name="reveal_at" defaultValue={state.values?.reveal_at_local} required />
       </Field>
-      <SubmitButton variant="soft" pendingLabel="Ajout…">
+      <SubmitButton variant="soft" size="row" pendingLabel="Ajout…">
         Ajouter
       </SubmitButton>
       <FormMessage state={state} className="sm:col-span-3" />

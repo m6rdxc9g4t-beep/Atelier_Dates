@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/proxy";
 import { APP_ICON_COOKIE, resolveAppIcon } from "@/lib/app-icon";
 
-/** Icônes d'écran d'accueil : celle choisie sur l'appareil (Paramètres), sinon F ♥ A sur iPhone et cœur néon ailleurs */
+/** Icônes d'écran d'accueil : celle choisie sur l'appareil (Paramètres), sinon F ♥ A sur iPhone et icône Atelier ailleurs */
 const APPLE_ICON_PATH = "/apple-touch-icon.png";
 const ICON_FILES = { fa: "/icons/apple-icon-iphone.png", neon: "/icons/apple-icon-neon.png" } as const;
 /** Manifeste dont les icônes sont F ♥ A (iOS récent peut s'en servir pour l'écran d'accueil) */

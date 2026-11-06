@@ -106,12 +106,12 @@ export function PushSettings() {
     });
   }
 
-  if (status === "loading") return <p className="text-sm text-ink-soft">Vérification de cet appareil…</p>;
+  if (status === "loading") return <p className="text-ui text-muted">Vérification de cet appareil…</p>;
 
   if (status === "install") {
     return (
-      <p className="flex items-start gap-2 rounded-2xl bg-sunken px-4 py-3 text-sm text-ink">
-        <Share className="mt-0.5 size-4 shrink-0 text-accent-strong" aria-hidden />
+      <p className="flex items-start gap-2 rounded-md bg-sunken px-3 py-2.5 text-ink">
+        <Share className="mt-0.5 size-4 shrink-0 text-faint" aria-hidden />
         <span>
           Sur iPhone, les notifications marchent depuis l&apos;app installée : dans Safari, touche{" "}
           <strong>Partager → Sur l&apos;écran d&apos;accueil</strong>, puis ouvre Notre Petit Monde depuis son icône et reviens ici.
@@ -121,12 +121,12 @@ export function PushSettings() {
   }
 
   if (status === "unsupported") {
-    return <p className="text-sm text-ink-soft">Cet appareil ou ce navigateur ne gère pas les notifications push. Les e-mails et SMS restent actifs.</p>;
+    return <p className="text-ui text-muted">Cet appareil ou ce navigateur ne gère pas les notifications push. Les e-mails et SMS restent actifs.</p>;
   }
 
   if (status === "denied") {
     return (
-      <p className="text-sm text-ink-soft">
+      <p className="text-ui text-muted">
         Les notifications sont bloquées pour cette app. Autorise-les dans les réglages de l&apos;appareil (sur iPhone :{" "}
         <strong>Réglages → Notifications → Petit Monde</strong> ; sur Mac : <strong>Réglages Système → Notifications</strong>), puis recharge la page.
       </p>
@@ -138,8 +138,8 @@ export function PushSettings() {
       <div className="flex flex-wrap items-center gap-3">
         {status === "on" ? (
           <>
-            <span className="inline-flex items-center gap-2 text-sm font-medium text-yes">
-              <BellRing className="size-4" aria-hidden />
+            <span className="inline-flex items-center gap-2 font-medium text-ink">
+              <BellRing className="size-4 text-faint" aria-hidden />
               Activées sur cet appareil
             </span>
             <Button variant="ghost" size="sm" onClick={disable} disabled={pending}>

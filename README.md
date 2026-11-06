@@ -4,7 +4,7 @@ Application web intime pour deux : rendez-vous à valider ensemble, cagnottes fa
 
 **En ligne :** https://atelier-dates.vercel.app — installable comme une app (Safari → *Fichier → Ajouter au Dock* sur Mac, *Partager → Sur l'écran d'accueil* sur iPhone).
 
-**Icône de l'app**, au choix sur chaque appareil (*Paramètres → Icône de l'app*) : **F ♥ A** ou **cœur néon** (charte atelier, même construction que l'icône d'atelier_Cuisine). Sans choix : F ♥ A sur iPhone, cœur néon ailleurs. Le choix est gardé dans le cookie `app_icon` (lu par `src/proxy.ts` et `src/components/theme/app-icons.tsx`, logique dans `src/lib/app-icon.ts`). Une icône déjà posée ne change pas d'elle-même : choisir dans Safari, supprimer l'ancienne icône puis rajouter l'app. Source du cœur néon : `public/brand/icone-coeur-neon.svg` ; PNG régénérés par `node scripts/icones.mjs`.
+**Icône de l'app**, au choix sur chaque appareil (*Paramètres → Icône de l'app*) : **F ♥ A** ou **icône Atelier** (charte v2 de la suite : cœur blanc sur carré arrondi rouge). Sans choix : F ♥ A sur iPhone, icône Atelier ailleurs. Le choix est gardé dans le cookie `app_icon` (lu par `src/proxy.ts` et `src/components/theme/app-icons.tsx`, logique dans `src/lib/app-icon.ts`). Une icône déjà posée ne change pas d'elle-même : choisir dans Safari, supprimer l'ancienne icône puis rajouter l'app. Source de l'icône Atelier : `public/brand/icone-atelier-dates.svg` ; PNG régénérés par `node scripts/icones.mjs`.
 
 **Stack :** Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · Tailwind CSS 4 · Supabase (Postgres, Auth, Storage, RLS) · Zod · Lucide · Vercel.
 
@@ -72,7 +72,7 @@ Le bucket Storage `memories` (privé) et ses politiques sont créés par la migr
 src/
 ├── proxy.ts                         # (ex-middleware) rafraîchit la session, protège les routes
 ├── app/
-│   ├── layout.tsx                   # polices, thème, métadonnées
+│   ├── layout.tsx                   # thème, métadonnées
 │   ├── connexion/                   # e-mail + mot de passe, ou lien magique ; déconnexion
 │   ├── auth/callback/route.ts       # retour du lien magique (code PKCE ou token_hash)
 │   ├── onboarding/                  # créer le couple ou le rejoindre avec un code
@@ -91,8 +91,8 @@ src/
 │   ├── ui/                          # Button, Field/Input, SubmitButton, ActionForm, Panel…
 │   ├── nav/                         # navigation latérale / barre d'onglets mobile
 │   ├── notifications/               # activation du push sur l'appareil, envoi d'un test
-│   └── theme/                       # script anti-flash, sélecteur clair/sombre + accent
-├── styles/atelier-brand/           # marque commune de la suite Atelier (copie exacte, ne pas modifier) + police Nunito (OFL)
+│   └── theme/                       # thème commun de la suite (atelier-theme.js) avant affichage, sélecteur Système/Clair/Sombre + accent
+├── styles/atelier-brand/           # kit commun de la suite Atelier, charte v2 « Linear » (copies exactes, ne pas modifier) : marque, thème, police Inter (OFL)
 └── lib/
     ├── supabase/                    # clients navigateur/serveur/proxy + types de la base
     ├── dal.ts                       # couche d'accès : utilisateur, couple, partenaire
