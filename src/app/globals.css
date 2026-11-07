@@ -166,11 +166,13 @@
   --text-display: var(--fs-display);
   --text-input: var(--fs-input);
 
-  /* Rayons de la suite : 4 touches, cases · 5 petites icônes, segments · 7 boutons, champs · 10 panneaux */
+  /* Rayons de la suite : 4 touches, cases · 5 petites icônes, segments · 7 boutons, champs · 10 panneaux
+     · 12 cartes de chiffres (cagnottes, bilans) */
   --radius-xs: 4px;
   --radius-sm: var(--atelier-radius-sm);
   --radius-md: var(--atelier-radius-md);
   --radius-lg: var(--atelier-radius-lg);
+  --radius-xl: var(--atelier-radius-xl);
 
   /* Plat au repos : seul ce qui flotte (dialogue, menu) a une ombre */
   --shadow-pop: var(--atelier-glow-strong);
