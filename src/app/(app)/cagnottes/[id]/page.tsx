@@ -11,6 +11,7 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import { computeBalance, debtSentence } from "@/lib/balances";
 import { getCoupleContext, nameOf } from "@/lib/dal";
 import { formatMoney, formatShortDate, todayInTimezone } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import { uuid } from "@/lib/validation/common";
 import { deleteExpense, deletePot, settleUp } from "../actions";
 import { ExpenseForm } from "./expense-form";
@@ -58,26 +59,23 @@ async function PotContent({ params }: { params: Promise<{ id: string }> }) {
         {pot.description && <p className="mt-2 text-muted">{pot.description}</p>}
       </header>
 
-      <Panel className="mb-8">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="text-small font-medium text-muted">Dépensé</p>
-            <p className="mt-0.5 text-display leading-tight font-semibold tracking-[-0.02em] tabular-nums text-ink">
-              {money(balance.total)}
-              {pot.budget != null && <span className="ml-1.5 text-ui font-normal tracking-normal text-muted">sur {money(Number(pot.budget))}</span>}
-            </p>
+      <section aria-label="Bilan de la cagnotte" className="mb-8 space-y-3">
+        {/* Cartes de chiffres : coins de 12 px (.atelier-kpi), plates, chiffres tabulaires */}
+        <dl className="grid grid-cols-2 gap-3 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
+          <div className={cn("atelier-kpi", members.length > 1 && "col-span-2 sm:col-span-1")}>
+            <dt className="atelier-kpi__label">Dépensé</dt>
+            <dd className="atelier-kpi__value">{money(balance.total)}</dd>
+            {pot.budget != null && <dd className="atelier-kpi__note">sur {money(Number(pot.budget))}</dd>}
           </div>
-          <dl className="flex gap-6">
-            {members.map((m) => (
-              <div key={m.id}>
-                <dt className="text-small font-medium text-muted">{m.id === userId ? "Tu as payé" : `${m.display_name} a payé`}</dt>
-                <dd className="mt-0.5 text-strong font-semibold tabular-nums text-ink">{money(balance.paid[m.id] ?? 0)}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+          {members.map((m) => (
+            <div key={m.id} className="atelier-kpi">
+              <dt className="atelier-kpi__label">{m.id === userId ? "Tu as payé" : `${m.display_name} a payé`}</dt>
+              <dd className="atelier-kpi__value">{money(balance.paid[m.id] ?? 0)}</dd>
+            </div>
+          ))}
+        </dl>
 
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
+        <Panel className="flex flex-wrap items-center justify-between gap-3">
           <p className="flex items-center gap-2 text-ink">
             <HandCoins className="size-4 shrink-0 text-faint" aria-hidden strokeWidth={1.75} />
             <span className="font-medium">{debtSentence(balance.debt, userId, (id) => nameOf(members, id), money)}</span>
@@ -90,8 +88,8 @@ async function PotContent({ params }: { params: Promise<{ id: string }> }) {
               </SubmitButton>
             </ActionForm>
           )}
-        </div>
-      </Panel>
+        </Panel>
+      </section>
 
       <Disclosure label="Ajouter une dépense" defaultOpen={expenses.length === 0}>
         <ExpenseForm
